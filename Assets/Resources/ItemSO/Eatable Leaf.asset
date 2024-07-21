@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a3644aea3e9baa44fb71ecf5bfe2c917, type: 3}
-  m_Name: Light Wood
+  m_Name: Eatable Leaf
   m_EditorClassIdentifier: 
-  sprite: {fileID: 21300000, guid: 65c59ccc59b5690458cb9e5324edc5dc, type: 3}
-  itemName: Light Wood
-  maxStackSize: 3
+  sprite: {fileID: 21300000, guid: 3dcb9f59631817747a80abbaeb347767, type: 3}
+  itemName: Eatable Leaf
+  maxStackSize: 4
   itemRarity: 2
-  price: 36
-  weight: 18
-  description: Wood To Build House and Furniture
-  itemType: 1
+  price: 30
+  weight: 16
+  description: A Consumable Leaf Which Will Heal Wounds
+  itemType: 0

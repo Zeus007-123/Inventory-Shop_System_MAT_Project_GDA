@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a3644aea3e9baa44fb71ecf5bfe2c917, type: 3}
-  m_Name: Light Wood
+  m_Name: Belt
   m_EditorClassIdentifier: 
-  sprite: {fileID: 21300000, guid: 65c59ccc59b5690458cb9e5324edc5dc, type: 3}
-  itemName: Light Wood
+  sprite: {fileID: 21300000, guid: da09804303305f542a686824630e7269, type: 3}
+  itemName: Belt
   maxStackSize: 3
-  itemRarity: 2
-  price: 36
-  weight: 18
-  description: Wood To Build House and Furniture
+  itemRarity: 1
+  price: 24
+  weight: 12
+  description: 'Belt Used To Tighten Pants '
   itemType: 1
