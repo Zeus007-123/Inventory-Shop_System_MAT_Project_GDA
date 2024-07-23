@@ -10,7 +10,8 @@ public class ItemSO : ScriptableObject
     public string itemName;
     public int maxStackSize;
     public ItemRarity itemRarity;
-    public float price;
+    public float buyingPrice;
+    public float sellingPrice;
     public float weight;
     public string description;
     public ItemType itemType;

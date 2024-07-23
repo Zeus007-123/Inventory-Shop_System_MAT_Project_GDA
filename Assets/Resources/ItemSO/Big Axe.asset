@@ -16,7 +16,8 @@ MonoBehaviour:
   itemName: Big Axe
   maxStackSize: 4
   itemRarity: 0
-  price: 20
+  buyingPrice: 20
+  sellingPrice: 30
   weight: 10
   description: A Weapon Which Can Cut Trees and Kill People
   itemType: 2

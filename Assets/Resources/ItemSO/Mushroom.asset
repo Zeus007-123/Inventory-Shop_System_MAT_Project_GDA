@@ -16,7 +16,8 @@ MonoBehaviour:
   itemName: Mushroom
   maxStackSize: 4
   itemRarity: 3
-  price: 40
+  buyingPrice: 40
+  sellingPrice: 45
   weight: 20
   description: 'Mushroom Which Can Be Eaten '
   itemType: 0

@@ -16,7 +16,8 @@ MonoBehaviour:
   itemName: Meat
   maxStackSize: 4
   itemRarity: 1
-  price: 20
+  buyingPrice: 20
+  sellingPrice: 25
   weight: 8
   description: Meat That Can Be Eaten To Restore Health
   itemType: 0

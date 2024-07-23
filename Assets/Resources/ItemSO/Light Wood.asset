@@ -16,7 +16,8 @@ MonoBehaviour:
   itemName: Light Wood
   maxStackSize: 3
   itemRarity: 2
-  price: 36
+  buyingPrice: 36
+  sellingPrice: 43
   weight: 18
   description: Wood To Build House and Furniture
   itemType: 1

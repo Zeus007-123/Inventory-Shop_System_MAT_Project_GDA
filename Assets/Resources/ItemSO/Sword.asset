@@ -16,7 +16,8 @@ MonoBehaviour:
   itemName: Sword
   maxStackSize: 2
   itemRarity: 2
-  price: 60
+  buyingPrice: 60
+  sellingPrice: 70
   weight: 30
   description: A Sword That Can Be Used For Killing
   itemType: 2

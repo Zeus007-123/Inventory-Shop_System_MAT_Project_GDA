@@ -16,7 +16,8 @@ MonoBehaviour:
   itemName: Eatable Leaf
   maxStackSize: 4
   itemRarity: 2
-  price: 30
+  buyingPrice: 30
+  sellingPrice: 35
   weight: 16
   description: A Consumable Leaf Which Will Heal Wounds
   itemType: 0

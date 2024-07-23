@@ -16,7 +16,8 @@ MonoBehaviour:
   itemName: Apple
   maxStackSize: 6
   itemRarity: 0
-  price: 10
+  buyingPrice: 10
+  sellingPrice: 15
   weight: 4
   description: A Consumable Food Which Gives Energy
   itemType: 0

@@ -16,7 +16,8 @@ MonoBehaviour:
   itemName: Belt
   maxStackSize: 3
   itemRarity: 1
-  price: 24
+  buyingPrice: 24
+  sellingPrice: 31
   weight: 12
   description: 'Belt Used To Tighten Pants '
   itemType: 1

@@ -16,7 +16,8 @@ MonoBehaviour:
   itemName: Coins
   maxStackSize: 15
   itemRarity: 0
-  price: 15
+  buyingPrice: 15
+  sellingPrice: 24
   weight: 8
   description: Coins That Can Be Sold and Used To Buy Items
   itemType: 3

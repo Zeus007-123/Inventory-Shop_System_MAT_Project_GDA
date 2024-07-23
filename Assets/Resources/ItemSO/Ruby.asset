@@ -16,7 +16,8 @@ MonoBehaviour:
   itemName: Ruby
   maxStackSize: 4
   itemRarity: 2
-  price: 45
+  buyingPrice: 45
+  sellingPrice: 54
   weight: 24
   description: A Rare Ruby Stone Which Is Very Bright In Color
   itemType: 3

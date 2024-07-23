@@ -16,7 +16,8 @@ MonoBehaviour:
   itemName: Boots
   maxStackSize: 2
   itemRarity: 0
-  price: 12
+  buyingPrice: 12
+  sellingPrice: 19
   weight: 6
   description: Boots That Can Be Worn On Feet
   itemType: 1

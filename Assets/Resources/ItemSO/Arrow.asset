@@ -16,7 +16,8 @@ MonoBehaviour:
   itemName: Arrow
   maxStackSize: 15
   itemRarity: 1
-  price: 40
+  buyingPrice: 40
+  sellingPrice: 50
   weight: 20
   description: Arrow That Can Be Used To Kill Enemies
   itemType: 2

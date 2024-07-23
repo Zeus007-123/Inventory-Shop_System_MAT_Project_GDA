@@ -16,7 +16,8 @@ MonoBehaviour:
   itemName: Assassin Creed Medal
   maxStackSize: 3
   itemRarity: 1
-  price: 30
+  buyingPrice: 30
+  sellingPrice: 39
   weight: 16
   description: Assassin Creed Medal Which Represents Honor In Killing
   itemType: 3
