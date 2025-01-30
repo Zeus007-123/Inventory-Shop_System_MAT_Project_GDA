@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Arrow
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: 7c00ea4006710ea4994e82ed1d0387ac, type: 3}
+  itemType: 3
   itemName: Arrow
-  maxStackSize: 15
-  itemRarity: 1
+  description: Arrow That Can Be Used To Kill Enemies
   buyingPrice: 40
   sellingPrice: 50
   weight: 20
-  description: Arrow That Can Be Used To Kill Enemies
-  itemType: 2
+  itemRarity: 2
+  maxStackSize: 15

@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Meat
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: 4a39cb4b272639541b7bd5ac0649acf7, type: 3}
+  itemType: 1
   itemName: Meat
-  maxStackSize: 4
-  itemRarity: 1
+  description: Meat That Can Be Eaten To Restore Health
   buyingPrice: 20
   sellingPrice: 25
   weight: 8
-  description: Meat That Can Be Eaten To Restore Health
-  itemType: 0
+  itemRarity: 2
+  maxStackSize: 4

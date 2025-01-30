@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Light Wood
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: 65c59ccc59b5690458cb9e5324edc5dc, type: 3}
+  itemType: 2
   itemName: Light Wood
-  maxStackSize: 3
-  itemRarity: 2
+  description: Wood To Build House and Furniture
   buyingPrice: 36
   sellingPrice: 43
   weight: 18
-  description: Wood To Build House and Furniture
-  itemType: 1
+  itemRarity: 3
+  maxStackSize: 3

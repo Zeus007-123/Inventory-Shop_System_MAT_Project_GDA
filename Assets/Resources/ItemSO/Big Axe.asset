@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Big Axe
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: 172774604c1bee84185a69041576525b, type: 3}
+  itemType: 3
   itemName: Big Axe
-  maxStackSize: 4
-  itemRarity: 0
+  description: A Weapon Which Can Cut Trees and Kill People
   buyingPrice: 20
   sellingPrice: 30
   weight: 10
-  description: A Weapon Which Can Cut Trees and Kill People
-  itemType: 2
+  itemRarity: 1
+  maxStackSize: 4

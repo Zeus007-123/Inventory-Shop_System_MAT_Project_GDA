@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Eatable Leaf
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: 3dcb9f59631817747a80abbaeb347767, type: 3}
+  itemType: 1
   itemName: Eatable Leaf
-  maxStackSize: 4
-  itemRarity: 2
+  description: A Consumable Leaf Which Will Heal Wounds
   buyingPrice: 30
   sellingPrice: 35
   weight: 16
-  description: A Consumable Leaf Which Will Heal Wounds
-  itemType: 0
+  itemRarity: 3
+  maxStackSize: 4

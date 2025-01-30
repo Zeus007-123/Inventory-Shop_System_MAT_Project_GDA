@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Belt
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: da09804303305f542a686824630e7269, type: 3}
+  itemType: 2
   itemName: Belt
-  maxStackSize: 3
-  itemRarity: 1
+  description: 'Belt Used To Tighten Pants '
   buyingPrice: 24
   sellingPrice: 31
   weight: 12
-  description: 'Belt Used To Tighten Pants '
-  itemType: 1
+  itemRarity: 2
+  maxStackSize: 3

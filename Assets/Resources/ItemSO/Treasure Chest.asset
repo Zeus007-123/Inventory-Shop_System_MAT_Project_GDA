@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Treasure Chest
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: 23b6da3bd02bf4173aeb6be9d9cb4386, type: 3}
+  itemType: 4
   itemName: Treasure Chest
-  maxStackSize: 3
-  itemRarity: 3
+  description: Stone Which Can Be Used To Throw At Enemies
   buyingPrice: 60
   sellingPrice: 69
   weight: 32
-  description: Stone Which Can Be Used To Throw At Enemies
-  itemType: 3
+  itemRarity: 4
+  maxStackSize: 3

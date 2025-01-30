@@ -6,14 +6,27 @@ using UnityEngine;
 
 public class ItemSO : ScriptableObject
 {
-    public Sprite sprite;
-    public string itemName;
-    public int maxStackSize;
-    public ItemRarity itemRarity;
-    public float buyingPrice;
-    public float sellingPrice;
-    public float weight;
-    public string description;
-    public ItemType itemType;
+    [SerializeField] private Sprite sprite;
+    [SerializeField] private ItemType itemType;
+    [SerializeField] private string itemName;
+    [SerializeField] private string description;
+    [SerializeField] private float buyingPrice;
+    [SerializeField] private float sellingPrice;
+    [SerializeField] private float weight;
+    [SerializeField] private ItemRarity itemRarity;
+    [SerializeField] private int maxStackSize;
+    
+    public Sprite Sprite { get => sprite; }
+    public ItemType ItemType { get => itemType; }
+    public string ItemName { get => itemName;}
+    public string Description { get => description;}
+    public float BuyingPrice { get => buyingPrice;}
+    public float SellingPrice { get => sellingPrice;}
+    public float Weight { get => weight;}
+    public ItemRarity ItemRarity { get => itemRarity;}
+
+    
+    
+    
 
 }

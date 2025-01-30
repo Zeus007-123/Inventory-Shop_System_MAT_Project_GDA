@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Stamina Potion
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: e52ea25af699fd445b7046374f81a5b9, type: 3}
+  itemType: 1
   itemName: Stamina Potion
-  maxStackSize: 2
-  itemRarity: 4
+  description: Stamina Potion Which Will Restore Stamina
   buyingPrice: 50
   sellingPrice: 55
   weight: 24
-  description: Stamina Potion Which Will Restore Stamina
-  itemType: 0
+  itemRarity: 5
+  maxStackSize: 2

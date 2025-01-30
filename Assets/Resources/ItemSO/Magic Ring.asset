@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Magic Ring
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: 69aa728153f244640b0ad3f465814b24, type: 3}
+  itemType: 2
   itemName: Magic Ring
-  maxStackSize: 10
-  itemRarity: 4
+  description: Magic Ring Used To Weild Magic
   buyingPrice: 60
   sellingPrice: 67
   weight: 30
-  description: Magic Ring Used To Weild Magic
-  itemType: 1
+  itemRarity: 5
+  maxStackSize: 10

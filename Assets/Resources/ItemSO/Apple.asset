@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Apple
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: 5d9ba4e7d0964044ea54abe409d81dfd, type: 3}
+  itemType: 1
   itemName: Apple
-  maxStackSize: 6
-  itemRarity: 0
+  description: A Consumable Food Which Gives Energy
   buyingPrice: 10
   sellingPrice: 15
   weight: 4
-  description: A Consumable Food Which Gives Energy
-  itemType: 0
+  itemRarity: 1
+  maxStackSize: 6

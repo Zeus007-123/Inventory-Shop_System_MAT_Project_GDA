@@ -1,11 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-
-
 public enum ItemType
 {
+    None,
     Consumables,
     Materials,
     Weapons,
@@ -16,10 +11,27 @@ public enum ItemType
 
 public enum ItemRarity
 {
+    None,
     VeryCommon,
     Common,
     Rare,
     Epic,
     Legendary
 
+}
+
+public enum TransactionType
+{
+    None,
+    Buy,
+    Sell,
+    Gather
+}
+
+public enum SoundTypes
+{
+    None,
+    SuccessfulClick,
+    FailedClick,
+    TransactionClick
 }
