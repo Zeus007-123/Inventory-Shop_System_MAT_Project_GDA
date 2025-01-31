@@ -20,4 +20,4 @@ MonoBehaviour:
   sellingPrice: 31
   weight: 12
   itemRarity: 2
-  maxStackSize: 3
+  maxStackSize: 4
