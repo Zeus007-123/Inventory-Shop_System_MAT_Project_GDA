@@ -28,6 +28,10 @@ public class SoundService
     private void SubscribeToEvents()
     {
         eventService.OnButtonSelected.AddListener(PlaySoundEffects);
+        _eventService.OnBuyTransaction.AddListener(_ => PlaySound(SoundTypes.SuccessfulClick));
+    _eventService.OnSellTransaction.AddListener(_ => PlaySound(SoundTypes.SuccessfulClick));
+    _eventService.OnTransactionFailed.AddListener(_ => PlaySound(SoundTypes.FailedClick));
+
     }
 
     private void UnsubscribeToEvents()
