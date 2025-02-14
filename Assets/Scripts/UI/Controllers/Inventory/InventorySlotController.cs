@@ -7,6 +7,7 @@ public class InventorySlotController : MonoBehaviour
     [Header("UI References")]
     [SerializeField] private Image _itemIcon; // UI image component for item icon
     [SerializeField] private TextMeshProUGUI _quantityText; // UI text component for item quantity
+    [SerializeField] private Image _quantityBackground; // Background image for quantity display
 
     /// <summary>
     /// Initializes the inventory slot with the given item data.
@@ -24,6 +25,9 @@ public class InventorySlotController : MonoBehaviour
         // Assign the item sprite and quantity to the UI elements
         _itemIcon.sprite = item.Sprite;
         _quantityText.text = quantity.ToString();
+
+        // Enable and set the quantity background
+        _quantityBackground.gameObject.SetActive(quantity > 1);
 
         Debug.Log($"InventorySlot Initialized - Item: {item.ItemName}, Quantity: {quantity}");
 

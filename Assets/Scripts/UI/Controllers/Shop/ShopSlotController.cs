@@ -6,7 +6,7 @@ public class ShopSlotController : MonoBehaviour
 {
     [Header("UI References")]
     [SerializeField] private Image _itemIcon; // UI element for displaying item sprite
-    [SerializeField] private TextMeshProUGUI _priceText; // UI element for displaying item price
+    //[SerializeField] private TextMeshProUGUI _priceText; // UI element for displaying item price
     [SerializeField] private Button _itemButton; // Button to handle item selection
 
     private ItemSO _itemData; // Stores the item data associated with this shop slot
@@ -25,7 +25,7 @@ public class ShopSlotController : MonoBehaviour
 
         _itemData = item;
         _itemIcon.sprite = item.Sprite;
-        _priceText.text = $"{item.BuyingPrice}G"; // Display item price in gold (G)
+        //_priceText.text = $"{item.BuyingPrice}G"; // Display item price in gold (G)
 
         // Remove existing listeners to avoid duplicate event bindings
         _itemButton.onClick.RemoveAllListeners();

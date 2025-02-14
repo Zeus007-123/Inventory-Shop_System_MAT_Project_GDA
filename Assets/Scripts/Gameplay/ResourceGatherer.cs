@@ -14,7 +14,7 @@ public class ResourceGatherer : MonoBehaviour
         Debug.Log("[ResourceGatherer] Initialized with gather button.");
     }
 
-    private void OnGatherResources()
+    public void OnGatherResources()
     {
         Debug.Log("[ResourceGatherer] Gather button clicked.");
 

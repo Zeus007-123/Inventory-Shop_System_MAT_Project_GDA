@@ -45,7 +45,7 @@ public class ConfirmationPanelController : MonoBehaviour
     /// <summary>
     /// Executes the confirmation action and hides the panel.
     /// </summary>
-    private void OnConfirm()
+    public void OnConfirm()
     {
         Debug.Log("ConfirmationPanelController: Confirm button clicked.");
         _confirmAction?.Invoke();
@@ -56,7 +56,7 @@ public class ConfirmationPanelController : MonoBehaviour
     /// <summary>
     /// Hides the panel without executing any action.
     /// </summary>
-    private void OnCancel()
+    public void OnCancel()
     {
         Debug.Log("ConfirmationPanelController: Cancel button clicked. Panel hidden.");
         _panel.SetActive(false);

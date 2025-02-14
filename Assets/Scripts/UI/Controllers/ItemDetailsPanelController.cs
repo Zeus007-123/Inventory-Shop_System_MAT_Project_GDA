@@ -1,12 +1,14 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 public class ItemDetailsPanelController : MonoBehaviour
 {
     [Header("UI References")]
     [SerializeField] private GameObject _panel; // The UI panel that displays item details
     [SerializeField] private Image _itemIcon; // Image component for displaying the item sprite
+    [SerializeField] private TextMeshProUGUI _itemType; // UI text for item type
     [SerializeField] private TextMeshProUGUI _itemName; // UI text for the item name
     [SerializeField] private TextMeshProUGUI _description; // UI text for the item description
     [SerializeField] private TextMeshProUGUI _buyPrice; // UI text displaying item buy price
@@ -39,6 +41,7 @@ public class ItemDetailsPanelController : MonoBehaviour
 
         // Set UI elements with item details
         _itemIcon.sprite = item.Sprite;
+        _itemType.text = item.ItemType.ToString();
         _itemName.text = item.ItemName;
         _description.text = item.Description;
         _buyPrice.text = $"Buy: {item.BuyingPrice}G";
@@ -60,5 +63,11 @@ public class ItemDetailsPanelController : MonoBehaviour
 
         _panel.SetActive(true);
         Debug.Log($"ItemDetailsPanelController: Displaying details for {item.ItemName}, from {(isFromShop ? "Shop" : "Inventory")}");
+    }
+
+    public void HideDetails()
+    { 
+        _panel.SetActive(false);
+        Debug.Log($"ItemDetailsPanelController: Panel Closed Without Any Action");
     }
 }
