@@ -1,6 +1,5 @@
-/*using UnityEngine;
+using UnityEngine;
 using TMPro;
-using UnityEditor.MPE;
 
 public class TransactionController : MonoBehaviour
 {
@@ -69,4 +68,4 @@ public class TransactionController : MonoBehaviour
         );
         _transactionPanel.SetActive(false);
     }
-}*/
+}

@@ -1,6 +1,6 @@
-/*public class EventService
+public class EventService
 {
-    private static EventService instance;
+    /*private static EventService instance;
     public static EventService Instance
     {
         get
@@ -11,23 +11,26 @@
             }
             return instance;
         }
-    }
+    }*/
 
     // Transaction Events
+    public EventController<float> OnCurrencyUpdated { get; private set; }
     public EventController<ItemSO, int> OnBuyTransaction { get; private set; }
     public EventController<ItemSO, int> OnSellTransaction { get; private set; }
     public EventController<string> OnTransactionFailed { get; private set; }
 
     // UI Events
     public EventController<ItemSO, bool> OnItemSelected { get; private set; } // bool: isFromShop
+    public EventController<ItemSO, bool> OnTransactionInitiated { get; private set; }
 
     // System Events
     public EventController OnWeightLimitExceeded { get; private set; }
     public EventController<string> OnTransactionMessage { get; private set; }
 
 
-    private EventService()
+    public EventService()
     {
+        OnCurrencyUpdated = new EventController<float>();
         OnBuyTransaction = new EventController<ItemSO, int>();
         OnSellTransaction = new EventController<ItemSO, int>();
         OnTransactionFailed = new EventController<string>();
@@ -37,4 +40,3 @@
 
     }
 }
-*/

@@ -1,7 +1,6 @@
-/*using UnityEngine;
+using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-using UnityEditor.MPE;
 
 public class ItemDetailsPanelController : MonoBehaviour
 {
@@ -14,6 +13,7 @@ public class ItemDetailsPanelController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _sellPrice;
     [SerializeField] private TextMeshProUGUI _weight;
     [SerializeField] private TextMeshProUGUI _rarity;
+    [SerializeField] private TextMeshProUGUI _maxStackSize;
     [SerializeField] private Button _actionButton;
 
     private void Start()
@@ -31,15 +31,17 @@ public class ItemDetailsPanelController : MonoBehaviour
         _sellPrice.text = $"Sell: {item.SellingPrice}G";
         _weight.text = $"{item.Weight}kg";
         _rarity.text = item.ItemRarity.ToString();
+        _maxStackSize.text = item.MaxStackSize.ToString();
 
         _actionButton.onClick.RemoveAllListeners();
         _actionButton.GetComponentInChildren<TextMeshProUGUI>().text = isFromShop ? "BUY" : "SELL";
         _actionButton.onClick.AddListener(() =>
         {
-            ServiceLocator.Get<EventService>().OnTransactionInitiated.Trigger(item, isFromShop);
+            
+            ServiceLocator.Get<EventService>().OnTransactionInitiated?.Invoke(item, isFromShop);
             _panel.SetActive(false);
         });
 
         _panel.SetActive(true);
     }
-}*/
+}

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "item", menuName = "scriptableObjects/item")]
@@ -25,7 +23,7 @@ public class ItemSO : ScriptableObject
     public float Weight { get => weight;}
     public ItemRarity ItemRarity { get => itemRarity;}
 
-    
+    public int MaxStackSize { get => maxStackSize;}
     
     
 

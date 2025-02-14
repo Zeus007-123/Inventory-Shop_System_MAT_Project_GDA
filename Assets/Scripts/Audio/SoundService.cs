@@ -1,15 +1,9 @@
-/*using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.MPE;
 using UnityEngine;
 
 public class SoundService
 {
     private readonly SoundSO soundScriptableObject;
     private readonly AudioSource audioEffects;
-
     private EventService eventService;
 
     public SoundService(SoundSO soundScriptableObject, AudioSource audioEffectSource)
@@ -21,44 +15,44 @@ public class SoundService
     public void Init(EventService eventService)
     {
         this.eventService = eventService;
-
         SubscribeToEvents();
     }
 
     private void SubscribeToEvents()
     {
-        eventService.OnButtonSelected.AddListener(PlaySoundEffects);
-        _eventService.OnBuyTransaction.AddListener(_ => PlaySound(SoundTypes.SuccessfulClick));
-    _eventService.OnSellTransaction.AddListener(_ => PlaySound(SoundTypes.SuccessfulClick));
-    _eventService.OnTransactionFailed.AddListener(_ => PlaySound(SoundTypes.FailedClick));
+        // Item selection (2 parameters: ItemSO + bool)
+        eventService.OnItemSelected.AddListener((_, __) => PlaySound(SoundTypes.SuccessfulClick));
 
+        // Transactions (2 parameters: ItemSO + int)
+        eventService.OnBuyTransaction.AddListener((_, __) => PlaySound(SoundTypes.TransactionClick));
+        eventService.OnSellTransaction.AddListener((_, __) => PlaySound(SoundTypes.TransactionClick));
+
+        // Transaction failure (1 parameter: string)
+        eventService.OnTransactionFailed.AddListener(_ => PlaySound(SoundTypes.FailedClick));
     }
 
     private void UnsubscribeToEvents()
     {
-        eventService.OnButtonSelected.RemoveListener(PlaySoundEffects);
+        eventService.OnItemSelected.RemoveListener((_, __) => PlaySound(SoundTypes.SuccessfulClick));
+        eventService.OnBuyTransaction.RemoveListener((_, __) => PlaySound(SoundTypes.TransactionClick));
+        eventService.OnSellTransaction.RemoveListener((_, __) => PlaySound(SoundTypes.TransactionClick));
+        eventService.OnTransactionFailed.RemoveListener(_ => PlaySound(SoundTypes.FailedClick));
     }
 
-    public void PlaySoundEffects(SoundTypes soundType)
+    private void PlaySound(SoundTypes soundType)
     {
-        bool loopSound = false;
         AudioClip clip = GetSoundClip(soundType);
         if (clip != null)
-        {
-            audioEffects.loop = loopSound;
-            audioEffects.clip = clip;
             audioEffects.PlayOneShot(clip);
-        }
-        else
-            Debug.LogError("No Audio Clip selected.");
     }
 
     private AudioClip GetSoundClip(SoundTypes soundType)
     {
-        Sounds sound = Array.Find(soundScriptableObject.audioList, item => item.soundType == soundType);
-        if (sound.audio != null)
-            return sound.audio;
-        return null;
+        Sounds sound = System.Array.Find(
+            soundScriptableObject.audioList,
+            item => item.soundType == soundType
+        );
+        return sound.audio;
     }
 
     ~SoundService()
@@ -66,4 +60,3 @@ public class SoundService
         UnsubscribeToEvents();
     }
 }
-*/

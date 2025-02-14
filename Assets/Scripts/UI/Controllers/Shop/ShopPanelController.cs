@@ -1,4 +1,4 @@
-/*using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ShopPanelController : MonoBehaviour
@@ -21,4 +21,4 @@ public class ShopPanelController : MonoBehaviour
             slot.GetComponent<ShopSlotController>().Initialize(item);
         }
     }
-}*/
+}

@@ -1,7 +1,6 @@
-/*using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using UnityEditor.MPE;
 
 public class ShopSlotController : MonoBehaviour
 {
@@ -21,7 +20,8 @@ public class ShopSlotController : MonoBehaviour
         _itemButton.onClick.RemoveAllListeners();
         _itemButton.onClick.AddListener(() =>
         {
-            ServiceLocator.Get<EventService>().OnItemSelected.Trigger(_itemData, isFromShop: true);
+            // Pass arguments in the correct order without named parameters
+            ServiceLocator.Get<EventService>().OnItemSelected.Invoke(_itemData, true);
         });
     }
-}*/
+}

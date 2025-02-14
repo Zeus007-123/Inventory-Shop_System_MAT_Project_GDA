@@ -1,41 +1,31 @@
-/*using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor.MPE;
 
 public class ResourceGatherer : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private Button _gatherButton;
 
-    private void Start()
-    {
-        _gatherButton.onClick.AddListener(OnGatherResources);
-    }
+    private void Start() => _gatherButton.onClick.AddListener(OnGatherResources);
 
     private void OnGatherResources()
     {
         var inventory = ServiceLocator.Get<IInventoryService>();
         var eventService = ServiceLocator.Get<EventService>();
 
-        // Weight Check
         if (inventory.CurrentWeight >= inventory.MaxWeight)
         {
-            eventService.OnTransactionFailed.Trigger("Max weight reached!");
-            eventService.OnPlaySound.Trigger(SoundTypes.FailedClick);
+            eventService.OnTransactionFailed.Invoke("Max weight reached!");
             return;
         }
 
-        // Rarity Calculation
         ItemRarity rarity = CalculateDynamicRarity(inventory.TotalValue);
         ItemSO item = GetRandomItemByRarity(rarity);
 
         if (item != null)
-        {
             inventory.AddItem(item, 1);
-            eventService.OnPlaySound.Trigger(SoundTypes.SuccessfulClick);
-        }
     }
 
     private ItemRarity CalculateDynamicRarity(float inventoryValue)
@@ -55,13 +45,9 @@ public class ResourceGatherer : MonoBehaviour
     private ItemSO GetRandomItemByRarity(ItemRarity rarity)
     {
         var shopService = ServiceLocator.Get<ShopService>();
-        List<ItemSO> candidates = shopService.AllItems
+        return shopService.AllItems
             .Where(item => item.ItemRarity == rarity)
-            .ToList();
-
-        return candidates.Count > 0 ?
-            candidates[Random.Range(0, candidates.Count)] :
-            null;
+            .OrderBy(_ => Random.value)
+            .FirstOrDefault();
     }
 }
-*/

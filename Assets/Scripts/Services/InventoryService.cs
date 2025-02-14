@@ -1,41 +1,56 @@
-/*using System.Collections.Generic;
-using UnityEditor.MPE;
+using System.Collections.Generic;
+using System.Linq;
 
 public class InventoryService : IInventoryService
 {
+    public class InventorySlot
+    {
+        public ItemSO Item { get; set; }
+        public int Quantity { get; set; }
+    }
+
+    private readonly List<InventorySlot> _slots = new();
     private readonly float _maxWeight;
     private float _currentWeight;
-    private List<ItemSO> _items = new();
 
-    public float TotalValue => _items.Sum(item => item.SellingPrice * quantity);
-    public bool IsFull => CurrentWeight >= MaxWeight;
+    // Explicit interface implementation
+    IEnumerable<InventoryService.InventorySlot> IInventoryService.Slots => _slots.AsReadOnly();
 
-    public bool CanAddItem(float weight) => CurrentWeight + weight <= MaxWeight;
-    public bool HasItem(ItemSO item, int quantity) =>
-    _items.Count(i => i == item) >= quantity;
-
+    public float CurrentWeight => _currentWeight;
+    public float MaxWeight => _maxWeight;
+    public float TotalValue => _slots.Sum(s => s.Item.SellingPrice * s.Quantity);
 
     public InventoryService(float maxWeight) => _maxWeight = maxWeight;
 
     public void AddItem(ItemSO item, int quantity)
     {
         float totalWeight = item.Weight * quantity;
-        if (_currentWeight + totalWeight > _maxWeight)
+        if (!CanAddItem(totalWeight))
         {
-            ServiceLocator.Get<EventService>().OnWeightLimitExceeded.Trigger();
+            ServiceLocator.Get<EventService>().OnWeightLimitExceeded.Invoke();
             return;
         }
 
-        // Add item logic
+        var slot = _slots.FirstOrDefault(s => s.Item == item);
+        if (slot != null) slot.Quantity += quantity;
+        else _slots.Add(new InventorySlot { Item = item, Quantity = quantity });
+
         _currentWeight += totalWeight;
-        ServiceLocator.Get<EventService>().OnPlaySound.Trigger(SoundTypes.SuccessfulClick);
-        ServiceLocator.Get<InventoryPanelController>().UpdateInventorySlots(_items);
     }
 
     public void RemoveItem(ItemSO item, int quantity)
     {
-        // Remove item logic
+        var slot = _slots.FirstOrDefault(s => s.Item == item);
+        if (slot == null || slot.Quantity < quantity) return;
+
+        slot.Quantity -= quantity;
         _currentWeight -= item.Weight * quantity;
-        ServiceLocator.Get<EventService>().OnPlaySound.Trigger(SoundTypes.SuccessfulClick);
+
+        if (slot.Quantity <= 0)
+            _slots.Remove(slot);
     }
-}*/
+
+    public bool CanAddItem(float weight) => _currentWeight + weight <= _maxWeight;
+    public bool HasItem(ItemSO item, int quantity) =>
+        _slots.Any(s => s.Item == item && s.Quantity >= quantity);
+}

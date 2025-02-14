@@ -6,5 +6,5 @@ public interface ICurrencyService : IService
     bool TryDeductCoins(float amount);
     bool HasSufficientFunds(float amount);
     float CurrentCoins { get; }
-    event Action<float> OnCurrencyUpdated;
+    
 }

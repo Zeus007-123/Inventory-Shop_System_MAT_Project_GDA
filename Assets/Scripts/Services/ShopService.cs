@@ -1,27 +1,26 @@
-/*using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 
 public class ShopService : IShopService
 {
-    private List<ItemSO> _allItems = new();
-    private List<ItemSO> _currentItems = new();
+    public List<ItemSO> AllItems { get; private set; }
+    public List<ItemSO> AvailableItems { get; private set; }
 
     public void Initialize(List<ItemSO> allItems)
     {
-        _allItems = allItems;
-        _currentItems = _allItems;
+        AllItems = allItems;
+        AvailableItems = allItems.ToList(); // Create a copy
     }
 
     public List<ItemSO> GetFilteredItems(ItemType type)
     {
-        _currentItems = _allItems
+        AvailableItems = AllItems
             .Where(item => item.ItemType == type || type == ItemType.All)
             .ToList();
 
-        return _currentItems;
-
-        ServiceLocator.Get<ShopPanelController>().InitializeShopSlots(filteredItems);
+        return AvailableItems;
     }
 
-    public List<ItemSO> AvailableItems => _currentItems;
-}*/
+    // Explicit interface implementation
+    List<ItemSO> IShopService.AvailableItems => AvailableItems;
+}

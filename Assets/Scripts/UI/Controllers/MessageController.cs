@@ -1,7 +1,6 @@
-/*using UnityEngine;
+using UnityEngine;
 using TMPro;
 using System.Collections;
-using UnityEditor.MPE;
 
 public class MessageController : MonoBehaviour
 {
@@ -32,4 +31,4 @@ public class MessageController : MonoBehaviour
         yield return new WaitForSeconds(_displayDuration);
         _messageText.gameObject.SetActive(false);
     }
-}*/
+}

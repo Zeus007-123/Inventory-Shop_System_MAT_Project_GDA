@@ -1,4 +1,3 @@
-/*using UnityEditor.MPE;
 using UnityEngine;
 
 public class CurrencyService : ICurrencyService
@@ -16,23 +15,23 @@ public class CurrencyService : ICurrencyService
     public void AddCoins(float amount)
     {
         _coins += amount;
-        _eventService.OnPlaySound.Trigger(SoundTypes.TransactionClick);
-        _eventService.OnCurrencyUpdated.Trigger(_coins);
+        _eventService.OnCurrencyUpdated.Invoke(_coins);
+        _eventService.OnSellTransaction.Invoke(null, (int)amount); // Trigger sell event for sound
     }
 
     public bool TryDeductCoins(float amount)
     {
-        if (_coins < amount)
+        if (!HasSufficientFunds(amount))
         {
-            _eventService.OnPlaySound.Trigger(SoundTypes.FailedClick);
-            _eventService.OnTransactionFailed.Trigger("Not enough coins!");
+            _eventService.OnTransactionFailed.Invoke("Not enough coins!");
             return false;
         }
 
         _coins -= amount;
-        _eventService.OnCurrencyUpdated.Trigger(_coins);
+        _eventService.OnCurrencyUpdated.Invoke(_coins);
+        _eventService.OnBuyTransaction.Invoke(null, (int)amount); // Trigger buy event for sound
         return true;
     }
 
     public bool HasSufficientFunds(float amount) => _coins >= amount;
-}*/
+}
