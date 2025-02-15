@@ -3,8 +3,8 @@ public enum ItemType
     None,
     Consumables,
     Materials,
+    Treasures,
     Weapons,
-    Treasure,
     All
 
 }

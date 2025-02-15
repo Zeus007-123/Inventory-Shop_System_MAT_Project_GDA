@@ -25,7 +25,8 @@ public class Bootstrapper : MonoBehaviour
         Debug.Log("[Bootstrapper] EventService registered");
 
         // Inventory service with configurable max weight
-        ServiceLocator.Register(new InventoryService(_maxInventoryWeight));
+        ServiceLocator.Register<IInventoryService>(new InventoryService(_maxInventoryWeight));
+        Debug.Log($"[Bootstrapper] Registered IInventoryService: {ServiceLocator.Get<IInventoryService>() != null}");
         Debug.Log($"[Bootstrapper] InventoryService registered (Max Weight: {_maxInventoryWeight}kg)");
 
         // Currency service for handling coins
@@ -46,7 +47,8 @@ public class Bootstrapper : MonoBehaviour
         }
 
         shopService.Initialize(new List<ItemSO>(items));
-        ServiceLocator.Register(shopService);
+        ServiceLocator.Register<IShopService>(shopService);
+        Debug.Log($"[Bootstrapper] Registered IShopService: {ServiceLocator.Get<IShopService>() != null}");
         Debug.Log("[Bootstrapper] ShopService registered with items");
         #endregion
 

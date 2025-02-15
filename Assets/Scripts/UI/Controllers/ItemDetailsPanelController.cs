@@ -1,7 +1,6 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-using static UnityEditor.Progress;
 
 public class ItemDetailsPanelController : MonoBehaviour
 {
@@ -31,22 +30,28 @@ public class ItemDetailsPanelController : MonoBehaviour
     /// </summary>
     /// <param name="item">The item to display.</param>
     /// <param name="isFromShop">True if the item is from the shop, false if from inventory.</param>
-    private void ShowDetails(ItemSO item, bool isFromShop)
+    
+    public void ShowDetails(ItemSO item, bool isFromShop)
     {
+        Debug.Log($"[ItemDetails] Received item: {item.ItemName}");
+        _panel.SetActive(true);
+
         if (item == null)
         {
             Debug.LogWarning("ItemDetailsPanelController: ShowDetails called with a null item.");
             return;
         }
+        
+        Debug.Log($"ItemDetailsPanelController: Displaying details for {item.ItemName}, from {(isFromShop ? "Shop" : "Inventory")}");
 
         // Set UI elements with item details
         _itemIcon.sprite = item.Sprite;
         _itemType.text = item.ItemType.ToString();
         _itemName.text = item.ItemName;
         _description.text = item.Description;
-        _buyPrice.text = $"Buy: {item.BuyingPrice}G";
-        _sellPrice.text = $"Sell: {item.SellingPrice}G";
-        _weight.text = $"{item.Weight}kg";
+        _buyPrice.text = $"{item.BuyingPrice}";
+        _sellPrice.text = $"{item.SellingPrice}";
+        _weight.text = $"{item.Weight}";
         _rarity.text = item.ItemRarity.ToString();
         _maxStackSize.text = item.MaxStackSize.ToString();
 
@@ -61,8 +66,7 @@ public class ItemDetailsPanelController : MonoBehaviour
             _panel.SetActive(false);
         });
 
-        _panel.SetActive(true);
-        Debug.Log($"ItemDetailsPanelController: Displaying details for {item.ItemName}, from {(isFromShop ? "Shop" : "Inventory")}");
+        
     }
 
     public void HideDetails()

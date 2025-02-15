@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Shield
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: f0a4bf65bd162456db0b84404426223d, type: 3}
-  itemType: 3
+  itemType: 4
   itemName: Shield
   description: A Shield Which Can Prevent Attacks
   buyingPrice: 80

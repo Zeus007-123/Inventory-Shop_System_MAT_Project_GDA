@@ -135,6 +135,8 @@ GameObject:
   - component: {fileID: 3025770}
   - component: {fileID: 3025769}
   - component: {fileID: 3025771}
+  - component: {fileID: 3025773}
+  - component: {fileID: 3025772}
   m_Layer: 5
   m_Name: Item_Details_Panel
   m_TagString: Untagged
@@ -227,6 +229,34 @@ MonoBehaviour:
   _rarity: {fileID: 1032535934}
   _maxStackSize: {fileID: 924583767}
   _actionButton: {fileID: 235972732}
+--- !u!114 &3025772
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3025767}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b697010b6e612324bad8cf69bffe2742, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _inventorySlotPrefab: {fileID: 7505034531792384815, guid: 9d57b08c939a1fc4e8e51ded8a404a2a, type: 3}
+  _inventoryPanelParent: {fileID: 873898906}
+--- !u!114 &3025773
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3025767}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e26f7af3f1ce1ec41b8b0cfba5d3c2fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _shopSlotsParent: {fileID: 870327912}
+  _shopSlotPrefab: {fileID: 3106610809204138308, guid: f936cff12059fb442a11ce1794098f3b, type: 3}
 --- !u!1 &119719198
 GameObject:
   m_ObjectHideFlags: 0
@@ -357,7 +387,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 126602168}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3025771}
+        m_TargetAssemblyTypeName: ItemDetailsPanelController, Assembly-CSharp
+        m_MethodName: HideDetails
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &126602168
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1072,19 +1114,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 235972733}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3025771}
-        m_TargetAssemblyTypeName: ItemDetailsPanelController, Assembly-CSharp
-        m_MethodName: HideDetails
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &235972733
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1509,7 +1539,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 303841564}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1565,7 +1595,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 303841567}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 870327916}
+        m_TargetAssemblyTypeName: ShopPanelController, Assembly-CSharp
+        m_MethodName: OnFilterButtonClicked
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Treasures
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &303841567
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2446,8 +2488,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 870327912}
-  - {fileID: 873898906}
+  - {fileID: 1230879937}
+  - {fileID: 2061613182}
   m_Father: {fileID: 1307433845}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -3895,7 +3937,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 827110101}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3951,7 +3993,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 827110104}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 870327916}
+        m_TargetAssemblyTypeName: ShopPanelController, Assembly-CSharp
+        m_MethodName: OnFilterButtonClicked
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: ' All '
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &827110104
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4198,6 +4252,7 @@ GameObject:
   - component: {fileID: 870327913}
   - component: {fileID: 870327915}
   - component: {fileID: 870327916}
+  - component: {fileID: 870327917}
   m_Layer: 5
   m_Name: Shop_Panel
   m_TagString: Untagged
@@ -4212,7 +4267,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 870327911}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -4222,11 +4277,11 @@ RectTransform:
   - {fileID: 303841565}
   - {fileID: 1946868314}
   - {fileID: 827110102}
-  m_Father: {fileID: 493448696}
+  m_Father: {fileID: 1230879937}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 393.7, y: -409.15}
   m_SizeDelta: {x: 797.3, y: 818.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &870327913
@@ -4303,8 +4358,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e26f7af3f1ce1ec41b8b0cfba5d3c2fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _shopSlotsParent: {fileID: 870327912}
   _shopSlotPrefab: {fileID: 3106610809204138308, guid: f936cff12059fb442a11ce1794098f3b, type: 3}
-  _shopPanelParent: {fileID: 870327912}
+--- !u!114 &870327917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 870327911}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40ce18dc8a48e0848b0475df17ef5b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _panel: {fileID: 3025767}
+  _itemIcon: {fileID: 186414576}
+  _itemType: {fileID: 2106343825}
+  _itemName: {fileID: 1143502674}
+  _description: {fileID: 2108364127}
+  _buyPrice: {fileID: 2009943033}
+  _sellPrice: {fileID: 2091835390}
+  _weight: {fileID: 776141803}
+  _rarity: {fileID: 1032535934}
+  _maxStackSize: {fileID: 924583767}
+  _actionButton: {fileID: 235972732}
 --- !u!1 &873898905
 GameObject:
   m_ObjectHideFlags: 0
@@ -4318,6 +4396,7 @@ GameObject:
   - component: {fileID: 873898907}
   - component: {fileID: 873898909}
   - component: {fileID: 873898910}
+  - component: {fileID: 873898911}
   m_Layer: 5
   m_Name: Inventory_Panel
   m_TagString: Untagged
@@ -4332,16 +4411,16 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 873898905}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 493448696}
+  m_Father: {fileID: 2061613182}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 1078.6, y: -405.65}
   m_SizeDelta: {x: 775.5, y: 811.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &873898907
@@ -4420,6 +4499,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _inventorySlotPrefab: {fileID: 7505034531792384815, guid: 9d57b08c939a1fc4e8e51ded8a404a2a, type: 3}
   _inventoryPanelParent: {fileID: 873898906}
+--- !u!114 &873898911
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 873898905}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40ce18dc8a48e0848b0475df17ef5b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _panel: {fileID: 3025767}
+  _itemIcon: {fileID: 186414576}
+  _itemType: {fileID: 2106343825}
+  _itemName: {fileID: 1143502674}
+  _description: {fileID: 2108364127}
+  _buyPrice: {fileID: 2009943033}
+  _sellPrice: {fileID: 2091835390}
+  _weight: {fileID: 776141803}
+  _rarity: {fileID: 1032535934}
+  _maxStackSize: {fileID: 924583767}
+  _actionButton: {fileID: 235972732}
 --- !u!1 &884474592
 GameObject:
   m_ObjectHideFlags: 0
@@ -5920,7 +6022,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1202105088}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -5976,7 +6078,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1202105091}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 870327916}
+        m_TargetAssemblyTypeName: ShopPanelController, Assembly-CSharp
+        m_MethodName: OnFilterButtonClicked
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Consumables
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1202105091
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6148,6 +6262,42 @@ MonoBehaviour:
   _messageText: {fileID: 639753623}
   _confirmButton: {fileID: 1441286751}
   _cancelButton: {fileID: 1921604148}
+--- !u!1 &1230879936
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1230879937}
+  m_Layer: 5
+  m_Name: Shop
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1230879937
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1230879936}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 870327912}
+  m_Father: {fileID: 493448696}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1254869620
 GameObject:
   m_ObjectHideFlags: 0
@@ -7582,7 +7732,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1699372924}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -7638,7 +7788,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1699372927}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 870327916}
+        m_TargetAssemblyTypeName: ShopPanelController, Assembly-CSharp
+        m_MethodName: OnFilterButtonClicked
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Materials
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1699372927
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8506,7 +8668,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1946868313}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -8562,7 +8724,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1946868316}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 870327916}
+        m_TargetAssemblyTypeName: ShopPanelController, Assembly-CSharp
+        m_MethodName: OnFilterButtonClicked
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: ' Weapons'
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1946868316
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9213,6 +9387,42 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2057179706}
   m_CullTransparentMesh: 1
+--- !u!1 &2061613181
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2061613182}
+  m_Layer: 5
+  m_Name: Inventory
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2061613182
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2061613181}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 873898906}
+  m_Father: {fileID: 493448696}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2078439466
 GameObject:
   m_ObjectHideFlags: 0

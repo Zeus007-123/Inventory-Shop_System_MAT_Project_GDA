@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Diamond
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: 81bd5338e61e8fc4ab69af40d78daf57, type: 3}
-  itemType: 4
+  itemType: 3
   itemName: Diamond
   description: Diamond Which Can Be Used to Buy Anything
   buyingPrice: 75

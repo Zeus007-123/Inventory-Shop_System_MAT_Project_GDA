@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 
-public interface IShopService : IService
+public interface IShopService
 {
-    void Initialize(List<ItemSO> allItems);
-    List<ItemSO> GetFilteredItems(ItemType type);
-    List<ItemSO> AvailableItems { get; }
     List<ItemSO> AllItems { get; }
+    void Initialize(List<ItemSO> items);
+    List<ItemSO> GetItemsByCategory(ItemType type);
+    List<ItemSO> GetItemsByCategory(string categoryName);
 }

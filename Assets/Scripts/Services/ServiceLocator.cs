@@ -4,25 +4,19 @@ using UnityEngine;
 
 public static class ServiceLocator
 {
-    private static Dictionary<Type, object> _services = new();
+    private static readonly Dictionary<Type, object> _services = new();
 
-    // Registers a service instance to the locator
     public static void Register<T>(T service)
     {
         _services[typeof(T)] = service;
-        Debug.Log($"Service Registered: {typeof(T).Name}");
     }
 
-    // Retrieves a registered service instance
     public static T Get<T>()
     {
-        if (_services.TryGetValue(typeof(T), out var service))
-        {
-            Debug.Log($"Service Retrieved: {typeof(T).Name}");
+        if (_services.TryGetValue(typeof(T), out object service))
             return (T)service;
-        }
 
-        Debug.LogError($"Service Not Found: {typeof(T).Name}"); // Error log
-        throw new Exception($"Service not found: {typeof(T).Name}");
+        Debug.LogError($"Service not found: {typeof(T)}");
+        return default;
     }
 }

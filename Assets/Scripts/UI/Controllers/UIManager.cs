@@ -15,6 +15,8 @@ public class UIManager : MonoBehaviour
     {
         var eventService = ServiceLocator.Get<EventService>();
 
+        //ServiceLocator.Get<EventService>().OnInventoryUpdated.AddListener(UpdateUI);
+
         // Subscribe to events for buy and sell transactions
         eventService.OnBuyTransaction.AddListener(UpdateUI);
         eventService.OnSellTransaction.AddListener(UpdateUI);
@@ -22,7 +24,7 @@ public class UIManager : MonoBehaviour
         Debug.Log("UIManager: Subscribed to OnBuyTransaction and OnSellTransaction events.");
 
         // Initialize UI with current values
-        UpdateUI(null, 0);
+        //UpdateUI(null, 0);
     }
 
     /// <summary>
@@ -33,10 +35,12 @@ public class UIManager : MonoBehaviour
     void UpdateUI(ItemSO item, int quantity)
     {
         float currentCoins = ServiceLocator.Get<CurrencyService>().CurrentCoins;
-        float currentWeight = ServiceLocator.Get<InventoryService>().CurrentWeight;
+        float currentWeight = ServiceLocator.Get<IInventoryService>().CurrentWeight;
 
         _coinsText.text = currentCoins.ToString();
-        _weightText.text = $"{currentWeight} / 1000";
+
+        var inventory = ServiceLocator.Get<IInventoryService>();
+        _weightText.text = $"{inventory.CurrentWeight} / {inventory.MaxWeight}"; // Include MaxWeight
 
         Debug.Log($"UIManager: UI updated - Coins: {currentCoins}, Weight: {currentWeight}/1000");
     }

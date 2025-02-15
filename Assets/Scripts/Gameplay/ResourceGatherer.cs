@@ -21,6 +21,8 @@ public class ResourceGatherer : MonoBehaviour
         var inventory = ServiceLocator.Get<IInventoryService>();
         var eventService = ServiceLocator.Get<EventService>();
 
+        Debug.Log($"[Inventory] Current Weight: {inventory.CurrentWeight}/{inventory.MaxWeight}");
+
         // Check inventory capacity
         if (inventory.CurrentWeight >= inventory.MaxWeight)
         {
@@ -67,8 +69,13 @@ public class ResourceGatherer : MonoBehaviour
     private ItemSO GetRandomItemByRarity(ItemRarity rarity)
     {
         // Fetch a random item of the specified rarity from ShopService
-        var shopService = ServiceLocator.Get<ShopService>();
-        var items = shopService.AllItems
+        var shopService = ServiceLocator.Get<IShopService>();
+
+        return shopService.AllItems
+        .Where(item => item.ItemRarity == rarity)
+        .OrderBy(_ => Random.value)
+        .FirstOrDefault();
+        /*var items = shopService.AllItems
             .Where(item => item.ItemRarity == rarity)
             .ToList();
 
@@ -78,6 +85,6 @@ public class ResourceGatherer : MonoBehaviour
             return null;
         }
 
-        return items.OrderBy(_ => Random.value).First();
+        return items.OrderBy(_ => Random.value).First();*/
     }
 }

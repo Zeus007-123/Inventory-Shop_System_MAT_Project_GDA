@@ -28,6 +28,7 @@ public class EventService
     public EventController<string> OnTransactionFailed { get; private set; } // Triggered when a transaction fails
 
     // UI-related events
+    public EventController OnInventoryUpdated { get; private set; }
     public EventController<ItemSO, bool> OnItemSelected { get; private set; } // Triggered when an item is selected (bool: isFromShop)
     public EventController<ItemSO, bool> OnTransactionInitiated { get; private set; } // Triggered when a transaction starts
 
@@ -46,6 +47,7 @@ public class EventService
         OnBuyTransaction = new EventController<ItemSO, int>();
         OnSellTransaction = new EventController<ItemSO, int>();
         OnTransactionFailed = new EventController<string>();
+        OnInventoryUpdated = new EventController();
         OnItemSelected = new EventController<ItemSO, bool>();
         OnTransactionInitiated = new EventController<ItemSO, bool>();
         OnWeightLimitExceeded = new EventController();

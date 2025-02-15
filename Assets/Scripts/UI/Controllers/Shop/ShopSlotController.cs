@@ -31,10 +31,10 @@ public class ShopSlotController : MonoBehaviour
         _itemButton.onClick.RemoveAllListeners();
         _itemButton.onClick.AddListener(() =>
         {
-            Debug.Log($"ShopSlotController: {item.ItemName} selected for purchase.");
+            Debug.Log($"[ShopSlot] Clicked item: {item.ItemName}");
 
             // Trigger item selection event with correct order of arguments
-            ServiceLocator.Get<EventService>().OnItemSelected.Invoke(_itemData, true);
+            ServiceLocator.Get<EventService>().OnItemSelected?.Invoke(item, true);
         });
 
         Debug.Log($"ShopSlotController: Initialized shop slot for {item.ItemName} with price {item.BuyingPrice}G.");

@@ -1,31 +1,41 @@
+using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
+/// <summary>
+/// Manages shop inventory, filtering, and item data.
+/// Implements IShopService for dependency injection.
+/// </summary>
 public class ShopService : IShopService
 {
-    public List<ItemSO> AllItems { get; private set; }
-    public List<ItemSO> AvailableItems { get; private set; }
-
-    // Initializes the shop service with available items
-    public void Initialize(List<ItemSO> allItems)
-    {
-        AllItems = allItems;
-        AvailableItems = allItems.ToList(); // Create a copy
-        Debug.Log("ShopService Initialized with items");
-    }
-
-    // Filters items based on type
-    public List<ItemSO> GetFilteredItems(ItemType type)
-    {
-        AvailableItems = AllItems
-            .Where(item => item.ItemType == type || type == ItemType.All)
-            .ToList();
-
-        Debug.Log($"Filtered Items by type: {type}");
-        return AvailableItems;
-    }
+    private List<ItemSO> _allItems = new List<ItemSO>();
+    private const string _defaultCategory = "All";
 
     // Explicit interface implementation
-    List<ItemSO> IShopService.AvailableItems => AvailableItems;
+    public List<ItemSO> AllItems => _allItems;
+
+    public void Initialize(List<ItemSO> items)
+    {
+        _allItems = items;
+        Debug.Log($"[ShopService] Initialized with {_allItems.Count} items.");
+    }
+
+    public List<ItemSO> GetItemsByCategory(ItemType type)
+    {
+        if (type == ItemType.All)
+            return _allItems;
+
+        Debug.Log($"[Shop] Filtering by {type}");
+        return _allItems.Where(item => item.ItemType == type).ToList();
+    }
+
+    public List<ItemSO> GetItemsByCategory(string categoryName)
+    {
+        if (categoryName == _defaultCategory)
+            return _allItems;
+
+        return _allItems.Where(item =>
+            item.ItemType.ToString().Equals(categoryName, System.StringComparison.OrdinalIgnoreCase)
+        ).ToList();
+    }
 }

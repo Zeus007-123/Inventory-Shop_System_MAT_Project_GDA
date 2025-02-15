@@ -18,14 +18,14 @@ public class InventoryService : IInventoryService
     // Exposes inventory slots as a read-only list (for interface implementation)
     IEnumerable<InventorySlot> IInventoryService.Slots => _slots.AsReadOnly();
 
-    public float CurrentWeight => _currentWeight;
-    public float MaxWeight => _maxWeight;
+    public float CurrentWeight { get; private set; }
+    public float MaxWeight { get; }
     public float TotalValue => _slots.Sum(s => s.Item.SellingPrice * s.Quantity);
 
     // Constructor initializes the inventory with a maximum weight limit
     public InventoryService(float maxWeight)
     {
-        _maxWeight = maxWeight;
+        MaxWeight = maxWeight;
         Debug.Log($"InventoryService Initialized with max weight: {_maxWeight}");
     }
 
@@ -33,6 +33,17 @@ public class InventoryService : IInventoryService
     public void AddItem(ItemSO item, int quantity)
     {
         float totalWeight = item.Weight * quantity;
+        float weightToAdd = item.Weight * quantity;
+
+        if (CurrentWeight + weightToAdd > MaxWeight)
+        {
+            Debug.LogWarning("[Inventory] Not enough space!");
+            return;
+        }
+
+        CurrentWeight += weightToAdd;
+        Debug.Log($"[Inventory] Added {quantity}x {item.ItemName} (Weight: {CurrentWeight}/{MaxWeight})");
+
         if (!CanAddItem(totalWeight))
         {
             ServiceLocator.Get<EventService>().OnWeightLimitExceeded.Invoke();
