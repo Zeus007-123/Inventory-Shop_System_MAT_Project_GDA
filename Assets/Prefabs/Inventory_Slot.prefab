@@ -93,7 +93,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &9178641419099558661
 RectTransform:
   m_ObjectHideFlags: 0
@@ -143,7 +143,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 5d9ba4e7d0964044ea54abe409d81dfd, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -196,7 +196,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7260400905190855233}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 865683008998856212}
+        m_TargetAssemblyTypeName: InventorySlotController, Assembly-CSharp
+        m_MethodName: OnItemClicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &7505034531792384815
 GameObject:
   m_ObjectHideFlags: 0
@@ -289,6 +301,7 @@ MonoBehaviour:
   _itemIcon: {fileID: 7260400905190855233}
   _quantityText: {fileID: 1334581305935087180}
   _quantityBackground: {fileID: 7379704108464798651}
+  _itemButton: {fileID: 1348224436264761974}
 --- !u!1 &8044429665521774359
 GameObject:
   m_ObjectHideFlags: 0

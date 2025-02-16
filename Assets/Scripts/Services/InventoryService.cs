@@ -1,69 +1,72 @@
+using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine; 
 
 public class InventoryService : IInventoryService
 {
-    // Represents an inventory slot holding an item and its quantity
-    public class InventorySlot
+    /*public class InventorySlot
     {
         public ItemSO Item { get; set; }
         public int Quantity { get; set; }
-    }
-
-    private readonly List<InventorySlot> _slots = new(); // Stores all inventory items
-    private readonly float _maxWeight; // Maximum weight the inventory can hold
-    private float _currentWeight; // Tracks the current weight of inventory
-
-    // Exposes inventory slots as a read-only list (for interface implementation)
-    IEnumerable<InventorySlot> IInventoryService.Slots => _slots.AsReadOnly();
-
+    }*/
+    private List<InventorySlot> _slots = new List<InventorySlot>();
+    public IEnumerable<InventorySlot> Slots => _slots.AsReadOnly();
     public float CurrentWeight { get; private set; }
     public float MaxWeight { get; }
-    public float TotalValue => _slots.Sum(s => s.Item.SellingPrice * s.Quantity);
+    public float TotalValue => CalculateTotalValue();
+    private const float WeightPrecision = 0.01f;
 
-    // Constructor initializes the inventory with a maximum weight limit
     public InventoryService(float maxWeight)
     {
         MaxWeight = maxWeight;
-        Debug.Log($"InventoryService Initialized with max weight: {_maxWeight}");
+        CurrentWeight = 0f;
+        Debug.Log($"[Inventory] Service initialized. Max capacity: {MaxWeight}kg");
     }
 
-    // Adds an item to the inventory if there is enough capacity
     public void AddItem(ItemSO item, int quantity)
     {
-        float totalWeight = item.Weight * quantity;
+        if (item == null)
+        {
+            Debug.LogError("[Inventory] Tried to add null item!");
+            return;
+        }
+
         float weightToAdd = item.Weight * quantity;
+        Debug.Log($"[Inventory] Attempting to add {quantity}x {item.ItemName} " +
+                 $"(Unit weight: {item.Weight}kg, Total: {weightToAdd}kg)");
 
-        if (CurrentWeight + weightToAdd > MaxWeight)
+        if (!CanAddItem(weightToAdd))
         {
-            Debug.LogWarning("[Inventory] Not enough space!");
+            Debug.LogError($"Cannot add {quantity}x {item.ItemName}. " +
+                          $"Would exceed weight limit ({CurrentWeight + weightToAdd}/{MaxWeight}kg)");
+            ServiceLocator.Get<EventService>().OnTransactionFailed.Invoke("Weight limit exceeded!");
             return;
         }
 
-        CurrentWeight += weightToAdd;
-        Debug.Log($"[Inventory] Added {quantity}x {item.ItemName} (Weight: {CurrentWeight}/{MaxWeight})");
+        
+        Debug.Log($"[Inventory] Added {quantity}x {item.ItemName}. " +
+                 $"New weight: {CurrentWeight:F2}/{MaxWeight}kg");
 
-        if (!CanAddItem(totalWeight))
+        InventorySlot existingSlot = _slots.Find(slot => slot.Item == item);
+        
+        if (existingSlot != null)
         {
-            ServiceLocator.Get<EventService>().OnWeightLimitExceeded.Invoke();
-            Debug.LogError($"Cannot add {quantity}x {item.ItemName}, weight limit exceeded!");
-            return;
-        }
-
-        // Check if the item already exists in the inventory
-        var slot = _slots.FirstOrDefault(s => s.Item == item);
-        if (slot != null)
-        {
-            slot.Quantity += quantity;
+            existingSlot.Quantity += quantity;
+            Debug.Log($"[Inventory] Stacked {quantity}x {item.ItemName} (Total: {existingSlot.Quantity})");
         }
         else
         {
             _slots.Add(new InventorySlot { Item = item, Quantity = quantity });
+            Debug.Log($"[Inventory] Added new item: {item.ItemName} x{quantity}");
         }
 
-        _currentWeight += totalWeight;
-        Debug.Log($"Added {quantity}x {item.ItemName} to inventory. Current Weight: {_currentWeight}/{_maxWeight}");
+        //Debug.Log($"[Inventory] Stored in slot: {item.ItemName} x{quantity}");
+        CurrentWeight += weightToAdd;
+
+        // Add to inventory storage logic here
+        ServiceLocator.Get<EventService>().OnInventoryUpdated.Invoke();
+
+        Debug.Log($"[Inventory] Added {quantity}x {item.ItemName} (Weight: {CurrentWeight}/{MaxWeight})");
     }
 
     // Removes an item from the inventory, ensuring there is enough quantity
@@ -77,7 +80,7 @@ public class InventoryService : IInventoryService
         }
 
         slot.Quantity -= quantity;
-        _currentWeight -= item.Weight * quantity;
+        CurrentWeight -= item.Weight * quantity;
 
         // Remove slot if quantity reaches zero
         if (slot.Quantity <= 0)
@@ -85,22 +88,44 @@ public class InventoryService : IInventoryService
             _slots.Remove(slot);
         }
 
-        Debug.Log($"Removed {quantity}x {item.ItemName} from inventory. Current Weight: {_currentWeight}/{_maxWeight}");
+        Debug.Log($"Removed {quantity}x {item.ItemName} from inventory. Current Weight: {CurrentWeight}/{MaxWeight}");
     }
 
-    // Checks if an item can be added based on available weight capacity
-    public bool CanAddItem(float weight)
+    public bool CanAddItem(float weightToAdd)
     {
-        bool canAdd = _currentWeight + weight <= _maxWeight;
-        Debug.Log($"Can add item? {canAdd} (Current: {_currentWeight}, Max: {_maxWeight}, Item Weight: {weight})");
-        return canAdd;
+        return (CurrentWeight + weightToAdd) <= MaxWeight + WeightPrecision;
     }
-
     // Checks if the inventory contains a specific item with a required quantity
     public bool HasItem(ItemSO item, int quantity)
     {
         bool hasItem = _slots.Any(s => s.Item == item && s.Quantity >= quantity);
         Debug.Log($"Has {quantity}x {item.ItemName}? {hasItem}");
         return hasItem;
+    }
+
+    public int GetItemQuantity(ItemSO item)
+    {
+        var slot = _slots.Find(s => s.Item == item);
+        return slot?.Quantity ?? 0;
+    }
+
+    private float CalculateTotalValue()
+    {
+        float total = 0f;
+        foreach (var slot in _slots)
+        {
+            if (slot.Item != null)
+            {
+                // Use SellingPrice or another value field from ItemSO
+                total += slot.Item.SellingPrice * slot.Quantity;
+            }
+        }
+        Debug.Log($"[Inventory] Total value: {total}G");
+        return total;
+    }
+    public void ResetInventory()
+    {
+        CurrentWeight = 0f;
+        Debug.Log("[Inventory] Reset to 0kg");
     }
 }

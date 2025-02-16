@@ -1,47 +1,48 @@
-using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class InventoryPanelController : MonoBehaviour
 {
-    [Header("References")]
-    [SerializeField] private GameObject _inventorySlotPrefab; // Prefab for inventory slot UI
-    [SerializeField] private Transform _inventoryPanelParent; // Parent transform for inventory slots
+    [Header("UI References")]
+    [SerializeField] private Transform _slotsParent;
+    [SerializeField] private GameObject _slotPrefab;
 
-    private void Start()
+    private IInventoryService _inventory;
+    private EventService _eventService;
+
+    void Start()
     {
-        // Retrieve the inventory service instance from the Service Locator
-        var inventory = ServiceLocator.Get<IInventoryService>();
-        Debug.Log("InventoryPanelController: Retrieved Inventory Service");
+        _inventory = ServiceLocator.Get<IInventoryService>();
+        _eventService = ServiceLocator.Get<EventService>();
 
-        // Initialize UI slots based on current inventory items
-        UpdateInventorySlots(inventory.Slots);
+        _eventService.OnInventoryUpdated.AddListener(UpdateInventoryUI);
+        UpdateInventoryUI();
+
+        Debug.Log("[InventoryPanel] Initialized");
     }
 
-    /// <summary>
-    /// Updates the inventory UI slots based on the provided inventory data.
-    /// </summary>
-    /// <param name="slots">The list of inventory slots containing items.</param>
-    public void UpdateInventorySlots(IEnumerable<InventoryService.InventorySlot> slots)
+    private void UpdateInventoryUI()
     {
-        Debug.Log("Updating Inventory UI Slots...");
+        ClearSlots();
 
-        // Clear existing inventory UI elements
-        foreach (Transform child in _inventoryPanelParent)
+        foreach (InventorySlot slot in _inventory.Slots)
+        {
+            if (slot.Item == null) continue;
+
+            GameObject slotObj = Instantiate(_slotPrefab, _slotsParent);
+            //slotObj.GetComponent<InventorySlotController>().Initialize(slot.Item, slot.Quantity);
+            var controller = slotObj.GetComponent<InventorySlotController>();
+            controller.Initialize(slot.Item, slot.Quantity); // Pass quantity
+        }
+
+        Debug.Log($"[InventoryPanel] Updated with {_inventory.Slots.Count()} items");
+    }
+
+    private void ClearSlots()
+    {
+        foreach (Transform child in _slotsParent)
         {
             Destroy(child.gameObject);
         }
-        Debug.Log("Cleared previous inventory slots.");
-
-        // Generate new inventory slots based on the current inventory state
-        foreach (var slot in slots)
-        {
-            GameObject slotObj = Instantiate(_inventorySlotPrefab, _inventoryPanelParent);
-            slotObj.GetComponent<InventorySlotController>()
-                   .Initialize(slot.Item, slot.Quantity);
-
-            Debug.Log($"Created slot for {slot.Quantity}x {slot.Item.ItemName}");
-        }
-
-        Debug.Log("Inventory UI Slots Updated Successfully.");
     }
 }

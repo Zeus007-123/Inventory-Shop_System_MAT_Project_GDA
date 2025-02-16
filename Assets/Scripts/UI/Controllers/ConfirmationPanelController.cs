@@ -29,6 +29,8 @@ public class ConfirmationPanelController : MonoBehaviour
     /// <param name="confirmAction">The action to execute upon confirmation.</param>
     public void ShowConfirmation(string message, System.Action confirmAction)
     {
+        _panel.SetActive(true);
+
         if (string.IsNullOrEmpty(message))
         {
             Debug.LogWarning("ConfirmationPanelController: ShowConfirmation called with an empty message.");
@@ -37,7 +39,7 @@ public class ConfirmationPanelController : MonoBehaviour
 
         _messageText.text = message;
         _confirmAction = confirmAction;
-        _panel.SetActive(true);
+        
 
         Debug.Log($"ConfirmationPanelController: Showing confirmation panel with message - {message}");
     }

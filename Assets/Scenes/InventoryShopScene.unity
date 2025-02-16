@@ -241,8 +241,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b697010b6e612324bad8cf69bffe2742, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _inventorySlotPrefab: {fileID: 7505034531792384815, guid: 9d57b08c939a1fc4e8e51ded8a404a2a, type: 3}
-  _inventoryPanelParent: {fileID: 873898906}
+  _slotsParent: {fileID: 0}
+  _slotPrefab: {fileID: 0}
 --- !u!114 &3025773
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -955,7 +955,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'CUMMULATIVE WEIGHT : 24'
+  m_text: 'CUMMULATIVE WEIGHT : '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1677,7 +1677,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _soundConfig: {fileID: 11400000, guid: 48a4b8e1a3694ea46b2c4e4e5e087149, type: 2}
   _audioSource: {fileID: 1254869622}
-  _maxInventoryWeight: 1000
+  _maxInventoryWeight: 100
+  _startingCoins: 0
   _messageController: {fileID: 831495281}
 --- !u!4 &306390989
 Transform:
@@ -4253,6 +4254,7 @@ GameObject:
   - component: {fileID: 870327915}
   - component: {fileID: 870327916}
   - component: {fileID: 870327917}
+  - component: {fileID: 870327918}
   m_Layer: 5
   m_Name: Shop_Panel
   m_TagString: Untagged
@@ -4383,6 +4385,23 @@ MonoBehaviour:
   _rarity: {fileID: 1032535934}
   _maxStackSize: {fileID: 924583767}
   _actionButton: {fileID: 235972732}
+--- !u!114 &870327918
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 870327911}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2c11c124bd1e2a4abc6223b8e796bdb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _transactionPanel: {fileID: 848570444}
+  _quantityText: {fileID: 887934325}
+  _totalPriceText: {fileID: 1529809162}
+  _maxQuantityText: {fileID: 1971405113}
+  _cumulativeWeightText: {fileID: 220342370}
 --- !u!1 &873898905
 GameObject:
   m_ObjectHideFlags: 0
@@ -4395,8 +4414,9 @@ GameObject:
   - component: {fileID: 873898908}
   - component: {fileID: 873898907}
   - component: {fileID: 873898909}
-  - component: {fileID: 873898910}
   - component: {fileID: 873898911}
+  - component: {fileID: 873898912}
+  - component: {fileID: 873898913}
   m_Layer: 5
   m_Name: Inventory_Panel
   m_TagString: Untagged
@@ -4420,7 +4440,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 1078.6, y: -405.65}
+  m_AnchoredPosition: {x: 1086.57, y: -405.65}
   m_SizeDelta: {x: 775.5, y: 811.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &873898907
@@ -4476,29 +4496,15 @@ MonoBehaviour:
   m_Padding:
     m_Left: 25
     m_Right: 25
-    m_Top: 25
+    m_Top: 70
     m_Bottom: 25
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 0
   m_CellSize: {x: 120, y: 120}
-  m_Spacing: {x: 30, y: 70}
+  m_Spacing: {x: 30, y: 50}
   m_Constraint: 0
   m_ConstraintCount: 2
---- !u!114 &873898910
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 873898905}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b697010b6e612324bad8cf69bffe2742, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _inventorySlotPrefab: {fileID: 7505034531792384815, guid: 9d57b08c939a1fc4e8e51ded8a404a2a, type: 3}
-  _inventoryPanelParent: {fileID: 873898906}
 --- !u!114 &873898911
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4522,6 +4528,37 @@ MonoBehaviour:
   _rarity: {fileID: 1032535934}
   _maxStackSize: {fileID: 924583767}
   _actionButton: {fileID: 235972732}
+--- !u!114 &873898912
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 873898905}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b697010b6e612324bad8cf69bffe2742, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _slotsParent: {fileID: 873898906}
+  _slotPrefab: {fileID: 7505034531792384815, guid: 9d57b08c939a1fc4e8e51ded8a404a2a, type: 3}
+--- !u!114 &873898913
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 873898905}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2c11c124bd1e2a4abc6223b8e796bdb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _transactionPanel: {fileID: 848570444}
+  _quantityText: {fileID: 887934325}
+  _totalPriceText: {fileID: 1529809162}
+  _maxQuantityText: {fileID: 1971405113}
+  _cumulativeWeightText: {fileID: 220342370}
 --- !u!1 &884474592
 GameObject:
   m_ObjectHideFlags: 0
@@ -4713,7 +4750,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 0
+  m_text: 1
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -7586,7 +7623,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'GOLD REQUIRED : 90'
+  m_text: 'GOLD REQUIRED : '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -8164,7 +8201,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 0/1000
+  m_text: 0/100
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 125cb55b44b24c4393181402bc6200e6, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 125cb55b44b24c4393181402bc6200e6, type: 2}
@@ -8966,7 +9003,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Max quantity that can be purchased : 6'
+  m_text: 'Max quantity that can be purchased : 0'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

@@ -12,16 +12,14 @@ public class TransactionController : MonoBehaviour
     [SerializeField] private TMP_Text _cumulativeWeightText; // Displays cumulative weight
 
     private ItemSO _currentItem; // Stores the selected item
-    private int _currentQuantity = 0; // Tracks the selected quantity
-    private int _maxPurchasableQuantity = 0; // Maximum quantity that can be bought
+    private int _currentQuantity; // Tracks the selected quantity
+    private int _maxPurchasableQuantity; // Maximum quantity that can be bought
     private TransactionType _currentTransactionType; // Stores whether the transaction is a Buy or Sell
-    private float _playerGold = 1000f; // Example player gold (Replace with actual player gold reference)
-    private float _playerWeightCapacity = 50f; // Example max carry weight (Replace with actual inventory system reference)
-
+    
     private void Start()
     {
         // Subscribe to the OnItemSelected event
-        ServiceLocator.Get<EventService>().OnItemSelected.AddListener(HandleItemSelection);
+        ServiceLocator.Get<EventService>().OnTransactionInitiated.AddListener(HandleItemSelection);
         Debug.Log("TransactionController: Initialized and subscribed to OnItemSelected event.");
     }
 
@@ -32,29 +30,58 @@ public class TransactionController : MonoBehaviour
     /// <param name="isFromShop">True if the item is being bought; false if selling.</param>
     private void HandleItemSelection(ItemSO item, bool isFromShop)
     {
+        _transactionPanel.SetActive(true);
+
         _currentItem = item;
         _currentTransactionType = isFromShop ? TransactionType.Buy : TransactionType.Sell;
 
         Debug.Log($"TransactionController: Item selected - {_currentItem.ItemName}, " +
                   $"Transaction Type: {_currentTransactionType}");
 
-        CalculateMaxPurchasableQuantity();
+        // Get actual player data
+        var currency = ServiceLocator.Get<ICurrencyService>();
+        var inventory = ServiceLocator.Get<IInventoryService>();
+
+        float availableWeight = _currentTransactionType == TransactionType.Buy
+            ? inventory.MaxWeight - inventory.CurrentWeight
+            : float.MaxValue;
+
+        CalculateMaxPurchasableQuantity(currency.CurrentCoins,
+        availableWeight,
+            isFromShop);
+
         ResetTransactionUI();
-        _transactionPanel.SetActive(true);
+        
         Debug.Log("TransactionController: Transaction panel activated.");
     }
 
     /// <summary>
     /// Calculates the maximum quantity that can be purchased based on player gold and weight capacity.
     /// </summary>
-    private void CalculateMaxPurchasableQuantity()
+    private void CalculateMaxPurchasableQuantity(float availableGold, float availableWeight, bool isBuying)
     {
-        float pricePerUnit = _currentTransactionType == TransactionType.Buy ? _currentItem.BuyingPrice : _currentItem.SellingPrice;
-        _maxPurchasableQuantity = Mathf.Min(
-            Mathf.FloorToInt(_playerGold / pricePerUnit), // Based on gold
-            Mathf.FloorToInt(_playerWeightCapacity / _currentItem.Weight), // Based on weight capacity
-            _currentItem.MaxStackSize // Based on max stack size
-        );
+        if (isBuying)
+        {
+            _maxPurchasableQuantity = Mathf.Min(
+                Mathf.FloorToInt(availableGold / _currentItem.BuyingPrice),
+                Mathf.FloorToInt(availableWeight / _currentItem.Weight),
+                _currentItem.MaxStackSize
+            );
+        }
+        else // Selling
+        {
+            _maxPurchasableQuantity = Mathf.Min(
+                ServiceLocator.Get<IInventoryService>().GetItemQuantity(_currentItem),
+                _currentItem.MaxStackSize
+            );
+        }
+
+        _maxPurchasableQuantity = Mathf.Max(_maxPurchasableQuantity, 0);
+
+        if (_maxPurchasableQuantity < 0)
+            _maxPurchasableQuantity = 0;
+
+        Debug.Log($"Max Quantity: {_maxPurchasableQuantity}");
 
         Debug.Log($"TransactionController: Max purchasable quantity calculated as {_maxPurchasableQuantity}");
     }
@@ -74,10 +101,10 @@ public class TransactionController : MonoBehaviour
     /// </summary>
     public void IncreaseQuantity()
     {
-        int previousQuantity = _currentQuantity;
+        if (_maxPurchasableQuantity == 0) return;
         _currentQuantity = Mathf.Clamp(_currentQuantity + 1, 0, _maxPurchasableQuantity);
 
-        Debug.Log($"TransactionController: Quantity increased from {previousQuantity} to {_currentQuantity}.");
+        Debug.Log($"TransactionController: Quantity increased from {_maxPurchasableQuantity} to {_currentQuantity}.");
         UpdateUI();
     }
 
@@ -86,10 +113,10 @@ public class TransactionController : MonoBehaviour
     /// </summary>
     public void DecreaseQuantity()
     {
-        int previousQuantity = _currentQuantity;
+        if (_currentQuantity == 0) return;
         _currentQuantity = Mathf.Clamp(_currentQuantity - 1, 0, _maxPurchasableQuantity);
 
-        Debug.Log($"TransactionController: Quantity decreased from {previousQuantity} to {_currentQuantity}.");
+        Debug.Log($"TransactionController: Quantity decreased from {_currentQuantity} to {_currentQuantity}.");
         UpdateUI();
     }
 
@@ -101,10 +128,13 @@ public class TransactionController : MonoBehaviour
         //_itemNameText.text = _currentItem.ItemName;
         _quantityText.text = _currentQuantity.ToString();
         _maxQuantityText.text = $"Max Quantity That Can Be Purchased: {_maxPurchasableQuantity}";
-        _cumulativeWeightText.text = $"Cumulative Weight: {_currentQuantity * _currentItem.Weight}kg";
+        
+        float pricePerUnit = _currentTransactionType == TransactionType.Buy
+            ? _currentItem.BuyingPrice
+            : _currentItem.SellingPrice;
 
-        float pricePerUnit = _currentTransactionType == TransactionType.Buy ? _currentItem.BuyingPrice : _currentItem.SellingPrice;
-        _totalPriceText.text = $"Gold Required: {pricePerUnit * _currentQuantity}G";
+        _totalPriceText.text = $"Gold Required: {pricePerUnit * _currentQuantity}";
+        _cumulativeWeightText.text = $"Cumulative Weight: {_currentQuantity * _currentItem.Weight}";
 
         Debug.Log($"TransactionController: UI updated - Item: {_currentItem.ItemName}, " +
                   $"Quantity: {_currentQuantity}, Total Price: {pricePerUnit * _currentQuantity}G, " +
@@ -116,6 +146,12 @@ public class TransactionController : MonoBehaviour
     /// </summary>
     public void ConfirmTransaction()
     {
+        if (_currentQuantity <= 0)
+        {
+            Debug.LogWarning("Transaction cancelled: Quantity is zero");
+            return;
+        }
+
         Debug.Log($"TransactionController: Confirming transaction - {_currentItem.ItemName}, " +
                   $"Quantity: {_currentQuantity}, Type: {_currentTransactionType}");
 
@@ -128,7 +164,8 @@ public class TransactionController : MonoBehaviour
                 Type = _currentTransactionType
             }
         );
-   
+
+        _transactionPanel.SetActive(false);
     }
 
     // Hide the transaction panel after confirmation

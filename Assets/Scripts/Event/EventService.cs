@@ -5,21 +5,7 @@ using UnityEngine;
 /// </summary>
 public class EventService
 {
-    /*
-    // Singleton pattern (commented out, but can be used if needed)
-    private static EventService instance;
-    public static EventService Instance
-    {
-        get
-        {
-            if (instance == null)
-            {
-                instance = new EventService();
-            }
-            return instance;
-        }
-    }
-    */
+    
 
     // Transaction-related events
     public EventController<float> OnCurrencyUpdated { get; private set; } // Triggered when currency is updated

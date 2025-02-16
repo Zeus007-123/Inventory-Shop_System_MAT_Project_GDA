@@ -56,13 +56,14 @@ public class ItemDetailsPanelController : MonoBehaviour
         _maxStackSize.text = item.MaxStackSize.ToString();
 
         // Configure action button for either buying or selling
-        _actionButton.onClick.RemoveAllListeners();
+        
         _actionButton.GetComponentInChildren<TextMeshProUGUI>().text = isFromShop ? "BUY" : "SELL";
-
+        _actionButton.onClick.RemoveAllListeners();
         _actionButton.onClick.AddListener(() =>
         {
             Debug.Log($"ItemDetailsPanelController: {(isFromShop ? "Buying" : "Selling")} {item.ItemName}");
             ServiceLocator.Get<EventService>().OnTransactionInitiated?.Invoke(item, isFromShop);
+            
             _panel.SetActive(false);
         });
 

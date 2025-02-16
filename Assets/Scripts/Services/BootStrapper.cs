@@ -10,7 +10,8 @@ public class Bootstrapper : MonoBehaviour
     [Header("Service References")]
     [SerializeField] private SoundSO _soundConfig;
     [SerializeField] private AudioSource _audioSource;
-    [SerializeField] private float _maxInventoryWeight = 1000f; // Replaced hard-coded value
+    [SerializeField] private float _maxInventoryWeight = 100f; // Replaced hard-coded value
+    [SerializeField] private float _startingCoins = 0f;
 
     [Header("UI References")]
     [SerializeField] private MessageController _messageController;
@@ -30,7 +31,7 @@ public class Bootstrapper : MonoBehaviour
         Debug.Log($"[Bootstrapper] InventoryService registered (Max Weight: {_maxInventoryWeight}kg)");
 
         // Currency service for handling coins
-        ServiceLocator.Register(new CurrencyService());
+        ServiceLocator.Register<ICurrencyService>(new CurrencyService(_startingCoins));
         Debug.Log("[Bootstrapper] CurrencyService registered");
         #endregion
 

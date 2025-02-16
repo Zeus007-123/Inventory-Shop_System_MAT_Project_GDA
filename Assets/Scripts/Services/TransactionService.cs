@@ -46,6 +46,10 @@ public class TransactionService : ITransactionService
     // Handles a purchase transaction
     private void HandlePurchase(TransactionData data)
     {
+        // In HandlePurchase
+        if (data.Quantity <= 0)
+            throw new System.Exception("Invalid quantity!");
+
         float totalCost = data.Item.BuyingPrice * data.Quantity;
         Debug.Log($"Attempting to buy {data.Quantity}x {data.Item.ItemName} for {totalCost}G");
 
@@ -69,6 +73,10 @@ public class TransactionService : ITransactionService
     // Handles a sale transaction
     private void HandleSale(TransactionData data)
     {
+        // In HandleSale
+        if (data.Quantity <= 0)
+            throw new System.Exception("Invalid quantity!");
+
         float totalValue = data.Item.SellingPrice * data.Quantity;
         Debug.Log($"Attempting to sell {data.Quantity}x {data.Item.ItemName} for {totalValue}G");
 
