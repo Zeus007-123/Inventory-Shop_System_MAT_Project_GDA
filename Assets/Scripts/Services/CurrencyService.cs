@@ -9,15 +9,22 @@ public class CurrencyService : ICurrencyService
         CurrentCoins = startingCoins;
     }
 
+    public void AddCoins(float amount)
+    {
+        CurrentCoins += amount;
+        ServiceLocator.Get<EventService>().OnCurrencyUpdated.Invoke();
+    }
+
     public bool TryDeductCoins(float amount)
     {
         if (CurrentCoins >= amount)
         {
             CurrentCoins -= amount;
+            ServiceLocator.Get<EventService>().OnCurrencyUpdated.Invoke();
             return true;
         }
         return false;
     }
 
-    public void AddCoins(float amount) => CurrentCoins += amount;
+    
 }

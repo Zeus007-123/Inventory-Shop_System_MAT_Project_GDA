@@ -26,10 +26,12 @@ public class TransactionService : ITransactionService
             {
                 case TransactionType.Buy:
                     HandlePurchase(data);
+                    _eventService.OnBuyTransaction.Invoke(data.Item, data.Quantity); // Success sound
                     break;
 
                 case TransactionType.Sell:
                     HandleSale(data);
+                    _eventService.OnSellTransaction.Invoke(data.Item, data.Quantity); // Success sound
                     break;
 
                 default:
@@ -63,7 +65,9 @@ public class TransactionService : ITransactionService
             throw new System.Exception("Inventory full!");
 
         // Add the item to the inventory
+        _currency.TryDeductCoins(totalCost);
         _inventory.AddItem(data.Item, data.Quantity);
+
         _eventService.OnBuyTransaction.Invoke(data.Item, data.Quantity);
         _eventService.OnTransactionMessage.Invoke($"Bought {data.Quantity}x {data.Item.ItemName} for {totalCost}G");
 
@@ -85,8 +89,10 @@ public class TransactionService : ITransactionService
             throw new System.Exception("Not enough items!");
 
         // Remove the item from the inventory and add coins to the balance
-        _inventory.RemoveItem(data.Item, data.Quantity);
         _currency.AddCoins(totalValue);
+        _inventory.RemoveItem(data.Item, data.Quantity);
+
+        _eventService.OnInventoryUpdated.Invoke();
         _eventService.OnSellTransaction.Invoke(data.Item, data.Quantity);
         _eventService.OnTransactionMessage.Invoke($"Sold {data.Quantity}x {data.Item.ItemName} for {totalValue}G");
 

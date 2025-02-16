@@ -80,13 +80,16 @@ public class InventoryService : IInventoryService
         }
 
         slot.Quantity -= quantity;
-        CurrentWeight -= item.Weight * quantity;
 
         // Remove slot if quantity reaches zero
         if (slot.Quantity <= 0)
         {
             _slots.Remove(slot);
         }
+
+        CurrentWeight -= item.Weight * quantity;
+
+        ServiceLocator.Get<EventService>().OnInventoryUpdated.Invoke();
 
         Debug.Log($"Removed {quantity}x {item.ItemName} from inventory. Current Weight: {CurrentWeight}/{MaxWeight}");
     }

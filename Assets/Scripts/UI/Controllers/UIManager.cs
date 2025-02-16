@@ -15,8 +15,9 @@ public class UIManager : MonoBehaviour
     {
         var eventService = ServiceLocator.Get<EventService>();
 
+        eventService.OnCurrencyUpdated.AddListener(UpdateUI);
         eventService.OnInventoryUpdated.AddListener(UpdateUI);
-
+        
         // Subscribe to events for buy and sell transactions
         eventService.OnBuyTransaction.AddListener(UpdateUIWithParams);
         eventService.OnSellTransaction.AddListener(UpdateUIWithParams);
@@ -39,9 +40,9 @@ public class UIManager : MonoBehaviour
         //float currentCoins = ServiceLocator.Get<CurrencyService>().CurrentCoins;
         //float currentWeight = ServiceLocator.Get<IInventoryService>().CurrentWeight;
 
-        var inventory = ServiceLocator.Get<IInventoryService>();
         var currency = ServiceLocator.Get<ICurrencyService>();
-
+        var inventory = ServiceLocator.Get<IInventoryService>();
+        
         //_coinsText.text = currentCoins.ToString();
 
         _coinsText.text = currency.CurrentCoins.ToString();

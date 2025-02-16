@@ -4252,9 +4252,10 @@ GameObject:
   - component: {fileID: 870327914}
   - component: {fileID: 870327913}
   - component: {fileID: 870327915}
-  - component: {fileID: 870327916}
   - component: {fileID: 870327917}
+  - component: {fileID: 870327916}
   - component: {fileID: 870327918}
+  - component: {fileID: 870327919}
   m_Layer: 5
   m_Name: Shop_Panel
   m_TagString: Untagged
@@ -4402,6 +4403,22 @@ MonoBehaviour:
   _totalPriceText: {fileID: 1529809162}
   _maxQuantityText: {fileID: 1971405113}
   _cumulativeWeightText: {fileID: 220342370}
+--- !u!114 &870327919
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 870327911}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf3bc5d72f776c641bb3cd4a58dece70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _panel: {fileID: 1221600917}
+  _messageText: {fileID: 639753623}
+  _confirmButton: {fileID: 1441286751}
+  _cancelButton: {fileID: 1921604148}
 --- !u!1 &873898905
 GameObject:
   m_ObjectHideFlags: 0
@@ -4415,8 +4432,9 @@ GameObject:
   - component: {fileID: 873898907}
   - component: {fileID: 873898909}
   - component: {fileID: 873898911}
-  - component: {fileID: 873898912}
   - component: {fileID: 873898913}
+  - component: {fileID: 873898914}
+  - component: {fileID: 873898915}
   m_Layer: 5
   m_Name: Inventory_Panel
   m_TagString: Untagged
@@ -4528,20 +4546,6 @@ MonoBehaviour:
   _rarity: {fileID: 1032535934}
   _maxStackSize: {fileID: 924583767}
   _actionButton: {fileID: 235972732}
---- !u!114 &873898912
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 873898905}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b697010b6e612324bad8cf69bffe2742, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _slotsParent: {fileID: 873898906}
-  _slotPrefab: {fileID: 7505034531792384815, guid: 9d57b08c939a1fc4e8e51ded8a404a2a, type: 3}
 --- !u!114 &873898913
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4559,6 +4563,36 @@ MonoBehaviour:
   _totalPriceText: {fileID: 1529809162}
   _maxQuantityText: {fileID: 1971405113}
   _cumulativeWeightText: {fileID: 220342370}
+--- !u!114 &873898914
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 873898905}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf3bc5d72f776c641bb3cd4a58dece70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _panel: {fileID: 1221600917}
+  _messageText: {fileID: 639753623}
+  _confirmButton: {fileID: 1441286751}
+  _cancelButton: {fileID: 1921604148}
+--- !u!114 &873898915
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 873898905}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b697010b6e612324bad8cf69bffe2742, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _slotsParent: {fileID: 873898906}
+  _slotPrefab: {fileID: 7505034531792384815, guid: 9d57b08c939a1fc4e8e51ded8a404a2a, type: 3}
 --- !u!1 &884474592
 GameObject:
   m_ObjectHideFlags: 0

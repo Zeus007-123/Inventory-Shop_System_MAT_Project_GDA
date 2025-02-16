@@ -42,11 +42,17 @@ public class TransactionController : MonoBehaviour
         var currency = ServiceLocator.Get<ICurrencyService>();
         var inventory = ServiceLocator.Get<IInventoryService>();
 
-        float availableWeight = _currentTransactionType == TransactionType.Buy
+        /*float availableWeight = _currentTransactionType == TransactionType.Buy
             ? inventory.MaxWeight - inventory.CurrentWeight
-            : float.MaxValue;
+            : float.MaxValue;*/
 
-        CalculateMaxPurchasableQuantity(currency.CurrentCoins,
+        float availableWeight = isFromShop
+            ? inventory.MaxWeight - inventory.CurrentWeight
+            : inventory.GetItemQuantity(item) * item.Weight;
+
+        float availableGold = isFromShop ? currency.CurrentCoins : float.MaxValue;
+
+        CalculateMaxPurchasableQuantity(availableGold,
         availableWeight,
             isFromShop);
 
@@ -62,8 +68,9 @@ public class TransactionController : MonoBehaviour
     {
         if (isBuying)
         {
+            float pricePerUnit = _currentItem.BuyingPrice;
             _maxPurchasableQuantity = Mathf.Min(
-                Mathf.FloorToInt(availableGold / _currentItem.BuyingPrice),
+                Mathf.FloorToInt(availableGold / pricePerUnit),
                 Mathf.FloorToInt(availableWeight / _currentItem.Weight),
                 _currentItem.MaxStackSize
             );
@@ -156,7 +163,7 @@ public class TransactionController : MonoBehaviour
                   $"Quantity: {_currentQuantity}, Type: {_currentTransactionType}");
 
         // Create transaction data and send it for processing
-        ServiceLocator.Get<TransactionService>().ProcessTransaction(
+        ServiceLocator.Get<ITransactionService>().ProcessTransaction(
             new TransactionData
             {
                 Item = _currentItem,

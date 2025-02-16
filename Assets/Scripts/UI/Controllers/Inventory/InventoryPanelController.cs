@@ -23,6 +23,12 @@ public class InventoryPanelController : MonoBehaviour
 
     private void UpdateInventoryUI()
     {
+        if (_slotsParent == null)
+        {
+            Debug.LogError("[InventoryPanel] _slotsParent is not assigned!");
+            return;
+        }
+
         ClearSlots();
 
         foreach (InventorySlot slot in _inventory.Slots)
@@ -30,9 +36,9 @@ public class InventoryPanelController : MonoBehaviour
             if (slot.Item == null) continue;
 
             GameObject slotObj = Instantiate(_slotPrefab, _slotsParent);
-            //slotObj.GetComponent<InventorySlotController>().Initialize(slot.Item, slot.Quantity);
-            var controller = slotObj.GetComponent<InventorySlotController>();
-            controller.Initialize(slot.Item, slot.Quantity); // Pass quantity
+            slotObj.GetComponent<InventorySlotController>().Initialize(slot.Item, slot.Quantity);
+            //var controller = slotObj.GetComponent<InventorySlotController>();
+            //controller.Initialize(slot.Item, slot.Quantity); // Pass quantity
         }
 
         Debug.Log($"[InventoryPanel] Updated with {_inventory.Slots.Count()} items");

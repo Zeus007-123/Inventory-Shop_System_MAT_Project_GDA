@@ -33,6 +33,9 @@ public class Bootstrapper : MonoBehaviour
         // Currency service for handling coins
         ServiceLocator.Register<ICurrencyService>(new CurrencyService(_startingCoins));
         Debug.Log("[Bootstrapper] CurrencyService registered");
+
+        ServiceLocator.Register<ITransactionService>(new TransactionService());
+
         #endregion
 
         #region Shop Service Initialization

@@ -8,7 +8,7 @@ public class EventService
     
 
     // Transaction-related events
-    public EventController<float> OnCurrencyUpdated { get; private set; } // Triggered when currency is updated
+    public EventController OnCurrencyUpdated { get; private set; } // Triggered when currency is updated
     public EventController<ItemSO, int> OnBuyTransaction { get; private set; } // Triggered when an item is bought
     public EventController<ItemSO, int> OnSellTransaction { get; private set; } // Triggered when an item is sold
     public EventController<string> OnTransactionFailed { get; private set; } // Triggered when a transaction fails
@@ -29,7 +29,7 @@ public class EventService
     {
         Debug.Log("[EventService] Initializing event controllers...");
 
-        OnCurrencyUpdated = new EventController<float>();
+        OnCurrencyUpdated = new EventController();
         OnBuyTransaction = new EventController<ItemSO, int>();
         OnSellTransaction = new EventController<ItemSO, int>();
         OnTransactionFailed = new EventController<string>();
