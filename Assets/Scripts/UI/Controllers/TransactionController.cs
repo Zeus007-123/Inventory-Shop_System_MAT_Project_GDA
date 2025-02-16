@@ -5,6 +5,7 @@ public class TransactionController : MonoBehaviour
 {
     [Header("UI References")]
     [SerializeField] private GameObject _transactionPanel; // UI panel for transaction
+    [SerializeField] private ConfirmationPanelController _confirmationPanel;
     //[SerializeField] private TMP_Text _itemNameText; // Displays the item name
     [SerializeField] private TMP_Text _quantityText; // Displays the selected quantity
     [SerializeField] private TMP_Text _totalPriceText; // Displays the total price (Gold Required)
@@ -163,15 +164,23 @@ public class TransactionController : MonoBehaviour
                   $"Quantity: {_currentQuantity}, Type: {_currentTransactionType}");
 
         // Create transaction data and send it for processing
-        ServiceLocator.Get<ITransactionService>().ProcessTransaction(
+        /*ServiceLocator.Get<ITransactionService>().ProcessTransaction(
             new TransactionData
             {
                 Item = _currentItem,
                 Quantity = _currentQuantity,
                 Type = _currentTransactionType
             }
-        );
+        );*/
 
+        var transactionData = new TransactionData
+        {
+            Item = _currentItem,
+            Quantity = _currentQuantity,
+            Type = _currentTransactionType
+        };
+
+        _confirmationPanel.ShowConfirmation(transactionData);
         _transactionPanel.SetActive(false);
     }
 

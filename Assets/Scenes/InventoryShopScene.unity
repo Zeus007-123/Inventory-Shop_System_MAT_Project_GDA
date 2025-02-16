@@ -4236,6 +4236,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _transactionPanel: {fileID: 848570444}
+  _confirmationPanel: {fileID: 1221600921}
   _quantityText: {fileID: 887934325}
   _totalPriceText: {fileID: 1529809162}
   _maxQuantityText: {fileID: 1971405113}
@@ -4399,6 +4400,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _transactionPanel: {fileID: 848570444}
+  _confirmationPanel: {fileID: 0}
   _quantityText: {fileID: 887934325}
   _totalPriceText: {fileID: 1529809162}
   _maxQuantityText: {fileID: 1971405113}
@@ -4417,8 +4419,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _panel: {fileID: 1221600917}
   _messageText: {fileID: 639753623}
-  _confirmButton: {fileID: 1441286751}
-  _cancelButton: {fileID: 1921604148}
 --- !u!1 &873898905
 GameObject:
   m_ObjectHideFlags: 0
@@ -4559,6 +4559,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _transactionPanel: {fileID: 848570444}
+  _confirmationPanel: {fileID: 0}
   _quantityText: {fileID: 887934325}
   _totalPriceText: {fileID: 1529809162}
   _maxQuantityText: {fileID: 1971405113}
@@ -4577,8 +4578,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _panel: {fileID: 1221600917}
   _messageText: {fileID: 639753623}
-  _confirmButton: {fileID: 1441286751}
-  _cancelButton: {fileID: 1921604148}
 --- !u!114 &873898915
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6331,8 +6330,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _panel: {fileID: 1221600917}
   _messageText: {fileID: 639753623}
-  _confirmButton: {fileID: 1441286751}
-  _cancelButton: {fileID: 1921604148}
 --- !u!1 &1230879936
 GameObject:
   m_ObjectHideFlags: 0

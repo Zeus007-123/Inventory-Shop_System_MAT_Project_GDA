@@ -7,17 +7,18 @@ public class ConfirmationPanelController : MonoBehaviour
     [Header("UI References")]
     [SerializeField] private GameObject _panel; // Panel UI element
     [SerializeField] private TextMeshProUGUI _messageText; // Text for displaying the confirmation message
-    [SerializeField] private Button _confirmButton; // Button to confirm the action
-    [SerializeField] private Button _cancelButton; // Button to cancel the action
+    //[SerializeField] private Button _confirmButton; // Button to confirm the action
+    //[SerializeField] private Button _cancelButton; // Button to cancel the action
 
-    private System.Action _confirmAction; // Stores the action to be executed upon confirmation
+    private TransactionData _pendingTransaction;
+    //private System.Action _confirmAction; // Stores the action to be executed upon confirmation
 
     private void Start()
     {
         _panel.SetActive(false); // Ensure the panel is hidden on start
 
-        _confirmButton.onClick.AddListener(OnConfirm);
-        _cancelButton.onClick.AddListener(OnCancel);
+        //_confirmButton.onClick.AddListener(OnConfirm);
+        //_cancelButton.onClick.AddListener(OnCancel);
 
         Debug.Log("ConfirmationPanelController: Initialized and panel set to inactive.");
     }
@@ -27,7 +28,7 @@ public class ConfirmationPanelController : MonoBehaviour
     /// </summary>
     /// <param name="message">The message to display in the panel.</param>
     /// <param name="confirmAction">The action to execute upon confirmation.</param>
-    public void ShowConfirmation(string message, System.Action confirmAction)
+    /*public void ShowConfirmation(string message, System.Action confirmAction)
     {
         _panel.SetActive(true);
 
@@ -42,6 +43,16 @@ public class ConfirmationPanelController : MonoBehaviour
         
 
         Debug.Log($"ConfirmationPanelController: Showing confirmation panel with message - {message}");
+    }*/
+
+    public void ShowConfirmation(TransactionData data)
+    {
+        _pendingTransaction = data;
+        _messageText.text = _pendingTransaction.Type == TransactionType.Buy
+            ? $"Buy {data.Quantity}x {data.Item.ItemName} for {data.Quantity * data.Item.BuyingPrice}G?"
+            : $"Sell {data.Quantity}x {data.Item.ItemName} for {data.Quantity * data.Item.SellingPrice}G?";
+
+        _panel.SetActive(true);
     }
 
     /// <summary>
@@ -49,10 +60,15 @@ public class ConfirmationPanelController : MonoBehaviour
     /// </summary>
     public void OnConfirm()
     {
-        Debug.Log("ConfirmationPanelController: Confirm button clicked.");
+        /*Debug.Log("ConfirmationPanelController: Confirm button clicked.");
         _confirmAction?.Invoke();
         _panel.SetActive(false);
-        Debug.Log("ConfirmationPanelController: Panel hidden after confirmation.");
+        Debug.Log("ConfirmationPanelController: Panel hidden after confirmation.");*/
+
+        ServiceLocator.Get<ITransactionService>().ProcessTransaction(_pendingTransaction);
+        _panel.SetActive(false);
+        ServiceLocator.Get<EventService>().OnInventoryUpdated.Invoke();
+
     }
 
     /// <summary>
