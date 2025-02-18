@@ -6,7 +6,6 @@ public class TransactionController : MonoBehaviour
     [Header("UI References")]
     [SerializeField] private GameObject _transactionPanel; // UI panel for transaction
     [SerializeField] private ConfirmationPanelController _confirmationPanel;
-    //[SerializeField] private TMP_Text _itemNameText; // Displays the item name
     [SerializeField] private TMP_Text _quantityText; // Displays the selected quantity
     [SerializeField] private TMP_Text _totalPriceText; // Displays the total price (Gold Required)
     [SerializeField] private TMP_Text _maxQuantityText; // Displays max quantity that can be purchased

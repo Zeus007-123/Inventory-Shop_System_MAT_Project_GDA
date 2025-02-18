@@ -1,59 +1,64 @@
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 using System.Collections;
 
 public class MessageController : MonoBehaviour
 {
     [Header("UI References")]
-    [SerializeField] private TextMeshProUGUI _messageText; // UI text component for displaying messages
-    [SerializeField] private float _displayDuration = 2f; // Duration the message remains visible
+    [SerializeField] private GameObject _messagePanel;
+    [SerializeField] private TextMeshProUGUI _messageText;
+    [SerializeField] private float _displayDuration = 2f;
 
-    private Coroutine _activeCoroutine; // Reference to the active coroutine
+    private Coroutine _currentMessageRoutine;
 
-    private void Start()
+    void Start()
     {
-        // Ensure the message text is initially hidden
-        _messageText.gameObject.SetActive(false);
+        Debug.Log("[MessageController] Initializing");
+        _messagePanel.SetActive(false);
 
-        // Subscribe to event listeners for transaction messages and failures
-        ServiceLocator.Get<EventService>().OnTransactionFailed.AddListener(ShowMessage);
-        ServiceLocator.Get<EventService>().OnTransactionMessage.AddListener(ShowMessage);
+        var eventService = ServiceLocator.Get<EventService>();
 
-        Debug.Log("MessageController: Initialized and subscribed to events.");
+        eventService.OnTransactionMessage.AddListener(ShowMessage);
+        eventService.OnTransactionFailed.AddListener(ShowError);
+
+        Debug.Log("[MessageController] Subscribed to OnTransactionMessage and OnTransactionFailed");
+
     }
 
-    /// <summary>
-    /// Displays a message when an event is triggered.
-    /// </summary>
-    /// <param name="message">The message to display.</param>
-    private void ShowMessage(string message)
+    public void ShowMessage(string message)
     {
-        Debug.Log($"MessageController: Received message - {message}");
-
-        // Stop any existing message coroutine to prevent overlapping messages
-        if (_activeCoroutine != null)
+        Debug.Log($"[Message] Showing: {message}");
+        if (_currentMessageRoutine != null)
         {
-            StopCoroutine(_activeCoroutine);
-            Debug.Log("MessageController: Stopped previous message coroutine.");
+            StopCoroutine(_currentMessageRoutine);
+            _messagePanel.SetActive(false); // Reset before showing new message
         }
 
-        // Start a new coroutine to display the message
-        _activeCoroutine = StartCoroutine(DisplayMessage(message));
+        _currentMessageRoutine = StartCoroutine(DisplayMessage(message));
     }
 
-    /// <summary>
-    /// Coroutine to display the message for a set duration.
-    /// </summary>
-    /// <param name="message">The message to display.</param>
     private IEnumerator DisplayMessage(string message)
     {
+        
+        Debug.Log("[Message] DisplayMessage coroutine started");
         _messageText.text = message;
-        _messageText.gameObject.SetActive(true);
-        Debug.Log($"MessageController: Displaying message - \"{message}\" for {_displayDuration} seconds.");
+
+        _messagePanel.SetActive(true);
+        Debug.Log($"[Message] Panel active: {_messagePanel.activeSelf}");
+        Debug.Log($"[Message] Text content: {_messageText.text}");
 
         yield return new WaitForSeconds(_displayDuration);
 
-        _messageText.gameObject.SetActive(false);
-        Debug.Log("MessageController: Message hidden.");
+        _messagePanel.SetActive(false);
+        Debug.Log("[Message] Panel hidden");
+        _currentMessageRoutine = null;
     }
+
+    public void ShowError(string errorMessage)
+    {
+        
+        ShowMessage($"<color=#ff0000>{errorMessage}</color>"); // Red text for errors
+        Debug.Log($"[Message] Showing error: {errorMessage}");
+    }
+
 }

@@ -11,6 +11,7 @@ public class EventService
     public EventController OnCurrencyUpdated { get; private set; } // Triggered when currency is updated
     public EventController<ItemSO, int> OnBuyTransaction { get; private set; } // Triggered when an item is bought
     public EventController<ItemSO, int> OnSellTransaction { get; private set; } // Triggered when an item is sold
+    public EventController OnTransactionSuccess { get; private set; }
     public EventController<string> OnTransactionFailed { get; private set; } // Triggered when a transaction fails
 
     // UI-related events
@@ -32,6 +33,7 @@ public class EventService
         OnCurrencyUpdated = new EventController();
         OnBuyTransaction = new EventController<ItemSO, int>();
         OnSellTransaction = new EventController<ItemSO, int>();
+        OnTransactionSuccess = new EventController();
         OnTransactionFailed = new EventController<string>();
         OnInventoryUpdated = new EventController();
         OnItemSelected = new EventController<ItemSO, bool>();

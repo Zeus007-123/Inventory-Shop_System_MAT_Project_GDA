@@ -2,11 +2,6 @@ using System.Collections.Generic;
 
 public interface IInventoryService
 {
-    /*public class InventorySlot
-    {
-        public ItemSO Item { get; set; }
-        public int Quantity { get; set; }
-    }*/
 
     IEnumerable<InventorySlot> Slots { get; }
     void AddItem(ItemSO item, int quantity);

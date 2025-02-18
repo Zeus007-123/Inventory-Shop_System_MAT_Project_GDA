@@ -69,6 +69,7 @@ public class SoundService
         eventService.OnItemSelected.AddListener(_onItemSelectedHandler);
         eventService.OnBuyTransaction.AddListener(_onBuyTransactionHandler);
         eventService.OnSellTransaction.AddListener(_onSellTransactionHandler);
+        eventService.OnTransactionSuccess.AddListener(() => PlaySound(SoundTypes.TransactionClick));
         eventService.OnTransactionFailed.AddListener(_onTransactionFailedHandler);
 
         Debug.Log("[SoundService] Subscribed to game events.");

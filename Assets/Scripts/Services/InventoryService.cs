@@ -4,11 +4,7 @@ using System.Linq;
 
 public class InventoryService : IInventoryService
 {
-    /*public class InventorySlot
-    {
-        public ItemSO Item { get; set; }
-        public int Quantity { get; set; }
-    }*/
+    
     private List<InventorySlot> _slots = new List<InventorySlot>();
     public IEnumerable<InventorySlot> Slots => _slots.AsReadOnly();
     public float CurrentWeight { get; private set; }

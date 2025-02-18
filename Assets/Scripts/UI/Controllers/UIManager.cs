@@ -37,13 +37,9 @@ public class UIManager : MonoBehaviour
     /// <param name="quantity">The quantity of the item involved in the transaction (not used directly in UI update).</param>
     private void UpdateUI()
     {
-        //float currentCoins = ServiceLocator.Get<CurrencyService>().CurrentCoins;
-        //float currentWeight = ServiceLocator.Get<IInventoryService>().CurrentWeight;
 
         var currency = ServiceLocator.Get<ICurrencyService>();
         var inventory = ServiceLocator.Get<IInventoryService>();
-        
-        //_coinsText.text = currentCoins.ToString();
 
         _coinsText.text = currency.CurrentCoins.ToString();
         _weightText.text = $"{inventory.CurrentWeight} / {inventory.MaxWeight}"; // Include MaxWeight

@@ -22,6 +22,8 @@ public class TransactionService : ITransactionService
         
         try
         {
+            _eventService.OnTransactionSuccess.Invoke();
+
             switch (data.Type)
             {
                 case TransactionType.Buy:
@@ -37,10 +39,12 @@ public class TransactionService : ITransactionService
                 default:
                     throw new System.NotImplementedException();
             }
+            
         }
         catch (System.Exception ex)
         {
             _eventService.OnTransactionFailed.Invoke(ex.Message);
+            //_eventService.OnTransactionMessage.Invoke(ex.Message);
             Debug.LogError($"Transaction failed: {ex.Message}");
         }
     }

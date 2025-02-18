@@ -5,10 +5,16 @@ public class ShopSlotController : MonoBehaviour
 {
     [Header("UI References")]
     [SerializeField] private Image _itemIcon; // UI element for displaying item sprite
-    //[SerializeField] private TextMeshProUGUI _priceText; // UI element for displaying item price
     [SerializeField] private Button _itemButton; // Button to handle item selection
 
-    private ItemSO _itemData; // Stores the item data associated with this shop slot
+    private EventService _eventService;
+
+    //private ItemSO _itemData; // Stores the item data associated with this shop slot
+
+    void Start()
+    {
+        _eventService = ServiceLocator.Get<EventService>();
+    }
 
     /// <summary>
     /// Initializes the shop slot with item data.
@@ -22,9 +28,8 @@ public class ShopSlotController : MonoBehaviour
             return;
         }
 
-        _itemData = item;
+        //_itemData = item;
         _itemIcon.sprite = item.Sprite;
-        //_priceText.text = $"{item.BuyingPrice}G"; // Display item price in gold (G)
 
         // Remove existing listeners to avoid duplicate event bindings
         _itemButton.onClick.RemoveAllListeners();
@@ -33,7 +38,7 @@ public class ShopSlotController : MonoBehaviour
             Debug.Log($"[ShopSlot] Clicked item: {item.ItemName}");
 
             // Trigger item selection event with correct order of arguments
-            ServiceLocator.Get<EventService>().OnItemSelected?.Invoke(item, true);
+            _eventService.OnItemSelected?.Invoke(item, true);
         });
 
         Debug.Log($"ShopSlotController: Initialized shop slot for {item.ItemName} with price {item.BuyingPrice}G.");

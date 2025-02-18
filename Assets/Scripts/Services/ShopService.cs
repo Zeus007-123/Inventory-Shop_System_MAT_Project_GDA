@@ -8,7 +8,7 @@ using System.Linq;
 /// </summary>
 public class ShopService : IShopService
 {
-    private List<ItemSO> _allItems = new List<ItemSO>();
+    private List<ItemSO> _allItems = new();
     private const string _defaultCategory = "All";
 
     // Explicit interface implementation

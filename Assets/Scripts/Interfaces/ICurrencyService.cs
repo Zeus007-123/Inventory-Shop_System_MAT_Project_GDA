@@ -1,5 +1,3 @@
-using System;
-
 public interface ICurrencyService : IService
 {
     void AddCoins(float amount);

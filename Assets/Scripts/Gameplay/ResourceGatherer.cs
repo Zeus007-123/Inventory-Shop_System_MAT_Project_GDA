@@ -8,8 +8,13 @@ public class ResourceGatherer : MonoBehaviour
     [Header("References")]
     [SerializeField] private Button _gatherButton;
 
+    private IInventoryService inventory;
+    private EventService eventService;
+
     private void Start()
     {
+        inventory = ServiceLocator.Get<IInventoryService>();
+        eventService = ServiceLocator.Get<EventService>();
         _gatherButton.onClick.AddListener(OnGatherResources);
         Debug.Log("[ResourceGatherer] Initialized with gather button.");
     }
@@ -18,16 +23,18 @@ public class ResourceGatherer : MonoBehaviour
     {
         Debug.Log("[ResourceGatherer] Gather button clicked.");
 
-        var inventory = ServiceLocator.Get<IInventoryService>();
-        var eventService = ServiceLocator.Get<EventService>();
+        //var inventory = ServiceLocator.Get<IInventoryService>();
+        //var eventService = ServiceLocator.Get<EventService>();
 
         Debug.Log($"[Inventory] Current Weight: {inventory.CurrentWeight}/{inventory.MaxWeight}");
 
         // Check inventory capacity
         if (inventory.CurrentWeight >= inventory.MaxWeight)
         {
-            Debug.LogWarning("[ResourceGatherer] Max weight reached!");
             eventService.OnTransactionFailed.Invoke("Max weight reached!");
+            Debug.LogWarning("[ResourceGatherer] Max weight reached!");
+            
+            //eventService.OnTransactionMessage.Invoke("Max weight reached!");
             return;
         }
 
@@ -75,16 +82,6 @@ public class ResourceGatherer : MonoBehaviour
         .Where(item => item.ItemRarity == rarity)
         .OrderBy(_ => Random.value)
         .FirstOrDefault();
-        /*var items = shopService.AllItems
-            .Where(item => item.ItemRarity == rarity)
-            .ToList();
-
-        if (items.Count == 0)
-        {
-            Debug.LogWarning($"[ResourceGatherer] No items found for rarity: {rarity}");
-            return null;
-        }
-
-        return items.OrderBy(_ => Random.value).First();*/
+        
     }
 }

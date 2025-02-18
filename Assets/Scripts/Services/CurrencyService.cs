@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class CurrencyService : ICurrencyService
 {
     public float CurrentCoins { get; private set; }

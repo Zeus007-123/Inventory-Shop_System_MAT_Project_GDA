@@ -11,11 +11,12 @@ public class InventorySlotController : MonoBehaviour
     [SerializeField] private Button _itemButton;
 
     private ItemSO _currentItem;
+    private EventService _eventService;
 
-    /*void Start()
+    private void Start()
     {
-        _itemButton.onClick.AddListener(OnItemClicked);
-    }*/
+        _eventService = ServiceLocator.Get<EventService>();
+    }
 
     public void Initialize(ItemSO item, int quantity)
     {
@@ -32,7 +33,7 @@ public class InventorySlotController : MonoBehaviour
     public void OnItemClicked()
     {
         Debug.Log($"[InventorySlot] Selected item: {_currentItem.ItemName}");
-        ServiceLocator.Get<EventService>().OnItemSelected?.Invoke(_currentItem, false); // false = from inventory
+        _eventService.OnItemSelected?.Invoke(_currentItem, false); // false = from inventory
     }
 
 }

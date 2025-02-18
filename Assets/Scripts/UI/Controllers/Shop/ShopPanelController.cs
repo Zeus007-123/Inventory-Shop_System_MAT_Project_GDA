@@ -12,12 +12,12 @@ public class ShopPanelController : MonoBehaviour
     [SerializeField] private GameObject _shopSlotPrefab;
 
     private IShopService _shopService;
-    private EventService _eventService;
+    //private EventService _eventService;
 
     void Start()
     {
         _shopService = ServiceLocator.Get<IShopService>();
-        _eventService = ServiceLocator.Get<EventService>();
+        //_eventService = ServiceLocator.Get<EventService>();
 
         LoadAllItems();
         Debug.Log("[ShopPanel] Initialized shop UI.");
@@ -43,8 +43,7 @@ public class ShopPanelController : MonoBehaviour
     // Add this method for button clicks
     public void OnFilterButtonClicked(string categoryName)
     {
-        ItemType type;
-        if (Enum.TryParse(categoryName, out type))
+        if (Enum.TryParse(categoryName, out ItemType type))
         {
             LoadItems(type);
         }
