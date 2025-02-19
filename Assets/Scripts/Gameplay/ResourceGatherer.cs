@@ -3,6 +3,12 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Linq;
 
+/// <summary>
+/// Handles resource gathering mechanics in the game. This script allows the player to collect resources,
+/// and update inventory accordingly. It manages gathering logic, cooldowns, and triggers relevant events 
+/// for resource collection.
+/// </summary>
+
 public class ResourceGatherer : MonoBehaviour
 {
     [Header("References")]
@@ -16,42 +22,28 @@ public class ResourceGatherer : MonoBehaviour
         inventory = ServiceLocator.Get<IInventoryService>();
         eventService = ServiceLocator.Get<EventService>();
         _gatherButton.onClick.AddListener(OnGatherResources);
-        Debug.Log("[ResourceGatherer] Initialized with gather button.");
     }
 
     public void OnGatherResources()
     {
-        Debug.Log("[ResourceGatherer] Gather button clicked.");
-
-        //var inventory = ServiceLocator.Get<IInventoryService>();
-        //var eventService = ServiceLocator.Get<EventService>();
-
-        Debug.Log($"[Inventory] Current Weight: {inventory.CurrentWeight}/{inventory.MaxWeight}");
 
         // Check inventory capacity
         if (inventory.CurrentWeight >= inventory.MaxWeight)
         {
             eventService.OnTransactionFailed.Invoke("Max weight reached!");
-            Debug.LogWarning("[ResourceGatherer] Max weight reached!");
             
-            //eventService.OnTransactionMessage.Invoke("Max weight reached!");
             return;
         }
 
         // Dynamic rarity calculation based on inventory value
         ItemRarity rarity = CalculateDynamicRarity(inventory.TotalValue);
-        Debug.Log($"[ResourceGatherer] Calculated rarity: {rarity}");
 
         ItemSO item = GetRandomItemByRarity(rarity);
         if (item != null)
         {
             inventory.AddItem(item, 1);
-            Debug.Log($"[ResourceGatherer] Added item: {item.ItemName} (Rarity: {item.ItemRarity})");
         }
-        else
-        {
-            Debug.LogWarning("[ResourceGatherer] No item found for rarity!");
-        }
+        
     }
 
     private ItemRarity CalculateDynamicRarity(float inventoryValue)
@@ -65,10 +57,6 @@ public class ResourceGatherer : MonoBehaviour
             new(ItemRarity.Epic, 8 + (0.05f * inventoryValue)),
             new(ItemRarity.Legendary, 2 + (0.02f * inventoryValue))
         };
-
-        // Log calculated weights for debugging
-        Debug.Log("[ResourceGatherer] Weights:\n" +
-                string.Join("\n", weights.Select(w => $"{w.Value}: {w.Weight}")));
 
         return WeightedRandomizer.GetRandomItem(weights);
     }

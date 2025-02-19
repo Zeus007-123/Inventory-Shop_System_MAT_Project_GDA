@@ -1,81 +1,50 @@
 using UnityEngine;
 using TMPro;
 
+/// <summary>
+/// Controls the confirmation panel UI for buy/sell transactions.
+/// Displays a message asking the player to confirm their action.
+/// </summary>
+
 public class ConfirmationPanelController : MonoBehaviour
 {
     [Header("UI References")]
     [SerializeField] private GameObject _panel; // Panel UI element
     [SerializeField] private TextMeshProUGUI _messageText; // Text for displaying the confirmation message
-    //[SerializeField] private Button _confirmButton; // Button to confirm the action
-    //[SerializeField] private Button _cancelButton; // Button to cancel the action
 
-    private TransactionData _pendingTransaction;
-    //private System.Action _confirmAction; // Stores the action to be executed upon confirmation
+    private TransactionData _pendingTransaction; // Stores transaction data awaiting confirmation
 
+    // Initializes the confirmation panel by ensuring it is hidden at the start.
     private void Start()
     {
         _panel.SetActive(false); // Ensure the panel is hidden on start
-
-        //_confirmButton.onClick.AddListener(OnConfirm);
-        //_cancelButton.onClick.AddListener(OnCancel);
-
-        Debug.Log("ConfirmationPanelController: Initialized and panel set to inactive.");
     }
 
-    /// <summary>
-    /// Displays the confirmation panel with a specified message and confirmation action.
-    /// </summary>
-    /// <param name="message">The message to display in the panel.</param>
-    /// <param name="confirmAction">The action to execute upon confirmation.</param>
-    /*public void ShowConfirmation(string message, System.Action confirmAction)
-    {
-        _panel.SetActive(true);
-
-        if (string.IsNullOrEmpty(message))
-        {
-            Debug.LogWarning("ConfirmationPanelController: ShowConfirmation called with an empty message.");
-            return;
-        }
-
-        _messageText.text = message;
-        _confirmAction = confirmAction;
-        
-
-        Debug.Log($"ConfirmationPanelController: Showing confirmation panel with message - {message}");
-    }*/
-
+    // Displays the confirmation panel with a formatted transaction message.
     public void ShowConfirmation(TransactionData data)
     {
-        _pendingTransaction = data;
+        _pendingTransaction = data; // Store the transaction data for later processing
+
+        // Format and set the confirmation message based on transaction type
         _messageText.text = _pendingTransaction.Type == TransactionType.Buy
             ? $"Buy {data.Quantity}x {data.Item.ItemName} for {data.Quantity * data.Item.BuyingPrice}G?"
             : $"Sell {data.Quantity}x {data.Item.ItemName} for {data.Quantity * data.Item.SellingPrice}G?";
 
-        _panel.SetActive(true);
+        _panel.SetActive(true); // Show the confirmation panel
     }
 
-    /// <summary>
-    /// Executes the confirmation action and hides the panel.
-    /// </summary>
+    // Confirms the transaction, processes it via the TransactionService, and updates inventory.
     public void OnConfirm()
     {
-        /*Debug.Log("ConfirmationPanelController: Confirm button clicked.");
-        _confirmAction?.Invoke();
-        _panel.SetActive(false);
-        Debug.Log("ConfirmationPanelController: Panel hidden after confirmation.");*/
-
-        ServiceLocator.Get<ITransactionService>().ProcessTransaction(_pendingTransaction);
-        _panel.SetActive(false);
-        ServiceLocator.Get<EventService>().OnInventoryUpdated.Invoke();
+        ServiceLocator.Get<ITransactionService>().ProcessTransaction(_pendingTransaction); // Process the stored transaction through the TransactionService
+        _panel.SetActive(false); // Hide the confirmation panel after completing the transaction
+        ServiceLocator.Get<EventService>().OnInventoryUpdated.Invoke(); // Notify the system that inventory has been updated
 
     }
 
-    /// <summary>
-    /// Hides the panel without executing any action.
-    /// </summary>
+    // Cancels the transaction and hides the confirmation panel.
     public void OnCancel()
     {
-        Debug.Log("ConfirmationPanelController: Cancel button clicked. Panel hidden.");
-        _panel.SetActive(false);
+        _panel.SetActive(false); // Simply hide the panel without performing any action
     }
 }

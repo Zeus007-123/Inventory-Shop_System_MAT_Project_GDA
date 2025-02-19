@@ -13,10 +13,7 @@ public class SoundSO : ScriptableObject
     public Sounds[] audioList; // Array of all sound effects used in the game
 }
 
-/// <summary>
-/// Struct that holds information about a specific sound.
-/// </summary>
-
+// Struct that holds information about a specific sound.
 [Serializable]
 public struct Sounds
 {

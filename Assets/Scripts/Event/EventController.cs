@@ -1,5 +1,12 @@
 using System;
 
+/// <summary>
+/// Manages and dispatches game events related to the inventory and shop system.  
+/// This script acts as an event hub, allowing different game components to communicate  
+/// without direct dependencies. It uses UnityEvents to handle item selection,  
+/// transactions, and other key interactions within the inventory and shop system.  
+/// </summary>
+
 public class EventController
 {
     // Non-generic version (No parameters)

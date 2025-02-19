@@ -1,177 +1,136 @@
 using UnityEngine;
 using TMPro;
 
+/// <summary>
+/// Manages the item transaction system for buying and selling items.
+/// This script handles item selection, quantity adjustments, UI updates, and transaction confirmation.
+/// </summary>
+
 public class TransactionController : MonoBehaviour
 {
     [Header("UI References")]
     [SerializeField] private GameObject _transactionPanel; // UI panel for transaction
     [SerializeField] private ConfirmationPanelController _confirmationPanel;
     [SerializeField] private TMP_Text _quantityText; // Displays the selected quantity
-    [SerializeField] private TMP_Text _totalPriceText; // Displays the total price (Gold Required)
-    [SerializeField] private TMP_Text _maxQuantityText; // Displays max quantity that can be purchased
+    [SerializeField] private TMP_Text _totalPriceText; // Displays the total price during buy and sell
+    [SerializeField] private TMP_Text _maxQuantityText; // Displays max quantity during buy and sell
     [SerializeField] private TMP_Text _cumulativeWeightText; // Displays cumulative weight
 
     private ItemSO _currentItem; // Stores the selected item
     private int _currentQuantity; // Tracks the selected quantity
-    private int _maxPurchasableQuantity; // Maximum quantity that can be bought
+    private int _maxPurchasableQuantity; // Maximum quantity that can be bought or sold
     private TransactionType _currentTransactionType; // Stores whether the transaction is a Buy or Sell
-    
+
+    // Subscribes to the transaction event when the script starts.
     private void Start()
     {
-        // Subscribe to the OnItemSelected event
+        // Listen for item selection events that initiate transactions
         ServiceLocator.Get<EventService>().OnTransactionInitiated.AddListener(HandleItemSelection);
-        Debug.Log("TransactionController: Initialized and subscribed to OnItemSelected event.");
     }
 
-    /// <summary>
-    /// Handles item selection for a transaction.
-    /// </summary>
-    /// <param name="item">The selected item.</param>
-    /// <param name="isFromShop">True if the item is being bought; false if selling.</param>
+    // Handles item selection and initializes transaction details. Determines if the transaction is a purchase or sale and sets up the UI accordingly.
     private void HandleItemSelection(ItemSO item, bool isFromShop)
     {
-        _transactionPanel.SetActive(true);
+        _transactionPanel.SetActive(true); // Show the transaction panel
 
-        _currentItem = item;
-        _currentTransactionType = isFromShop ? TransactionType.Buy : TransactionType.Sell;
+        _currentItem = item; // Store the selected item
+        _currentTransactionType = isFromShop ? TransactionType.Buy : TransactionType.Sell; // Determine transaction type
 
-        Debug.Log($"TransactionController: Item selected - {_currentItem.ItemName}, " +
-                  $"Transaction Type: {_currentTransactionType}");
-
-        // Get actual player data
+        // Fetch player-related data (currency and inventory services)
         var currency = ServiceLocator.Get<ICurrencyService>();
         var inventory = ServiceLocator.Get<IInventoryService>();
 
-        /*float availableWeight = _currentTransactionType == TransactionType.Buy
-            ? inventory.MaxWeight - inventory.CurrentWeight
-            : float.MaxValue;*/
-
+        // Calculate available weight and gold based on transaction type
         float availableWeight = isFromShop
             ? inventory.MaxWeight - inventory.CurrentWeight
             : inventory.GetItemQuantity(item) * item.Weight;
 
         float availableGold = isFromShop ? currency.CurrentCoins : float.MaxValue;
 
+        // Calculate the maximum quantity the player can buy or sell
         CalculateMaxPurchasableQuantity(availableGold,
         availableWeight,
             isFromShop);
 
+        // Reset transaction UI
         ResetTransactionUI();
         
-        Debug.Log("TransactionController: Transaction panel activated.");
     }
 
-    /// <summary>
-    /// Calculates the maximum quantity that can be purchased based on player gold and weight capacity.
-    /// </summary>
+    // Calculates the maximum quantity a player can buy or sell based on gold and weight limits.
+    //Ensures the quantity does not exceed the stack size limit.
     private void CalculateMaxPurchasableQuantity(float availableGold, float availableWeight, bool isBuying)
     {
-        if (isBuying)
+        if (isBuying) // Buying logic
         {
             float pricePerUnit = _currentItem.BuyingPrice;
             _maxPurchasableQuantity = Mathf.Min(
-                Mathf.FloorToInt(availableGold / pricePerUnit),
-                Mathf.FloorToInt(availableWeight / _currentItem.Weight),
-                _currentItem.MaxStackSize
+                Mathf.FloorToInt(availableGold / pricePerUnit),                         // Gold constraint
+                Mathf.FloorToInt(availableWeight / _currentItem.Weight),                // Weight constraint
+                _currentItem.MaxStackSize                                               // Stack limit constraint
             );
         }
-        else // Selling
+        else // Selling logic
         {
             _maxPurchasableQuantity = Mathf.Min(
-                ServiceLocator.Get<IInventoryService>().GetItemQuantity(_currentItem),
-                _currentItem.MaxStackSize
+                ServiceLocator.Get<IInventoryService>().GetItemQuantity(_currentItem),  // Available quantity
+                _currentItem.MaxStackSize                                               // Stack limit
             );
         }
 
-        _maxPurchasableQuantity = Mathf.Max(_maxPurchasableQuantity, 0);
+        _maxPurchasableQuantity = Mathf.Max(_maxPurchasableQuantity, 0); // Ensure it never goes below zero
 
-        if (_maxPurchasableQuantity < 0)
-            _maxPurchasableQuantity = 0;
-
-        Debug.Log($"Max Quantity: {_maxPurchasableQuantity}");
-
-        Debug.Log($"TransactionController: Max purchasable quantity calculated as {_maxPurchasableQuantity}");
     }
 
-    /// <summary>
-    /// Resets the transaction UI to default values.
-    /// </summary>
+    // Resets the transaction UI by setting the quantity to zero and updating the UI.
     private void ResetTransactionUI()
     {
-        _currentQuantity = 0;
+        _currentQuantity = 0; // Start with zero quantity
         UpdateUI();
-        Debug.Log("TransactionController: Transaction UI reset.");
     }
 
-    /// <summary>
-    /// Increases the quantity of the selected item in the transaction.
-    /// </summary>
+    // Increases the selected quantity, ensuring it does not exceed the maximum allowed amount.
     public void IncreaseQuantity()
     {
-        if (_maxPurchasableQuantity == 0) return;
+        if (_maxPurchasableQuantity == 0) return;                                           // Prevent increasing if no items can be bought/sold
+        
         _currentQuantity = Mathf.Clamp(_currentQuantity + 1, 0, _maxPurchasableQuantity);
 
-        Debug.Log($"TransactionController: Quantity increased from {_maxPurchasableQuantity} to {_currentQuantity}.");
         UpdateUI();
     }
 
-    /// <summary>
-    /// Decreases the quantity of the selected item in the transaction.
-    /// </summary>
+    // Decreases the selected quantity, ensuring it does not drop below zero.
     public void DecreaseQuantity()
     {
-        if (_currentQuantity == 0) return;
+        if (_currentQuantity == 0) return;                                                  // Prevent decreasing below zero
+
         _currentQuantity = Mathf.Clamp(_currentQuantity - 1, 0, _maxPurchasableQuantity);
 
-        Debug.Log($"TransactionController: Quantity decreased from {_currentQuantity} to {_currentQuantity}.");
         UpdateUI();
     }
 
-    /// <summary>
-    /// Updates the transaction UI with the latest item details.
-    /// </summary>
+    // Updates the transaction UI with the latest quantity, total price, and weight calculations.
     private void UpdateUI()
     {
-        //_itemNameText.text = _currentItem.ItemName;
         _quantityText.text = _currentQuantity.ToString();
-        _maxQuantityText.text = $"Max Quantity That Can Be Purchased: {_maxPurchasableQuantity}";
+        _maxQuantityText.text = $"Max Quantity: {_maxPurchasableQuantity}";
         
         float pricePerUnit = _currentTransactionType == TransactionType.Buy
             ? _currentItem.BuyingPrice
             : _currentItem.SellingPrice;
 
-        _totalPriceText.text = $"Gold Required: {pricePerUnit * _currentQuantity}";
+        _totalPriceText.text = $"Gold: {pricePerUnit * _currentQuantity}";
         _cumulativeWeightText.text = $"Cumulative Weight: {_currentQuantity * _currentItem.Weight}";
-
-        Debug.Log($"TransactionController: UI updated - Item: {_currentItem.ItemName}, " +
-                  $"Quantity: {_currentQuantity}, Total Price: {pricePerUnit * _currentQuantity}G, " +
-                  $"Max Quantity: {_maxPurchasableQuantity}, Cumulative Weight: {_currentQuantity * _currentItem.Weight}");
+    
     }
 
-    /// <summary>
-    /// Confirms the transaction and sends the transaction data for processing.
-    /// </summary>
+    // Confirms the transaction and sends the transaction data for final processing.
+    // Opens the confirmation panel before executing the transaction.
     public void ConfirmTransaction()
     {
-        if (_currentQuantity <= 0)
-        {
-            Debug.LogWarning("Transaction cancelled: Quantity is zero");
-            return;
-        }
+        if (_currentQuantity <= 0) return;              // Prevent confirming an empty transaction
 
-        Debug.Log($"TransactionController: Confirming transaction - {_currentItem.ItemName}, " +
-                  $"Quantity: {_currentQuantity}, Type: {_currentTransactionType}");
-
-        // Create transaction data and send it for processing
-        /*ServiceLocator.Get<ITransactionService>().ProcessTransaction(
-            new TransactionData
-            {
-                Item = _currentItem,
-                Quantity = _currentQuantity,
-                Type = _currentTransactionType
-            }
-        );*/
-
+        // Create transaction data
         var transactionData = new TransactionData
         {
             Item = _currentItem,
@@ -179,14 +138,13 @@ public class TransactionController : MonoBehaviour
             Type = _currentTransactionType
         };
 
-        _confirmationPanel.ShowConfirmation(transactionData);
-        _transactionPanel.SetActive(false);
+        _confirmationPanel.ShowConfirmation(transactionData); // Show confirmation UI
+        _transactionPanel.SetActive(false);                  // Hide the transaction panel
     }
 
-    // Hide the transaction panel after confirmation
+    // Cancels the transaction and hides the transaction panel.
     public void CancelTransaction()
     {
         _transactionPanel.SetActive(false);
-        Debug.Log("TransactionController: Transaction panel deactivated after confirmation.");
     }
 }

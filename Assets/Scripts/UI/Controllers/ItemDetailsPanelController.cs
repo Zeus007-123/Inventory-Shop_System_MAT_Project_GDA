@@ -2,6 +2,11 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
+/// <summary>
+/// Controls the UI panel that displays detailed information about an item.
+/// This panel is shown when an item is selected in the inventory or shop.
+/// </summary>
+
 public class ItemDetailsPanelController : MonoBehaviour
 {
     [Header("UI References")]
@@ -17,62 +22,48 @@ public class ItemDetailsPanelController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _maxStackSize; // UI text for max stack size
     [SerializeField] private Button _actionButton; // Button used for Buy/Sell actions
 
+    //Initializes the panel by subscribing to the item selection event. Ensures the panel is hidden at the start.
     private void Start()
     {
         // Subscribe to the item selection event to show item details
         ServiceLocator.Get<EventService>().OnItemSelected.AddListener(ShowDetails);
         _panel.SetActive(false); // Hide panel initially
-        Debug.Log("ItemDetailsPanelController: Initialized and panel set to inactive.");
     }
 
-    /// <summary>
-    /// Displays item details in the UI panel when an item is selected.
-    /// </summary>
-    /// <param name="item">The item to display.</param>
-    /// <param name="isFromShop">True if the item is from the shop, false if from inventory.</param>
-    
+    // Displays detailed information about a selected item.
     public void ShowDetails(ItemSO item, bool isFromShop)
     {
-        Debug.Log($"[ItemDetails] Received item: {item.ItemName}");
-        _panel.SetActive(true);
+        _panel.SetActive(true); // Show the panel
 
-        if (item == null)
-        {
-            Debug.LogWarning("ItemDetailsPanelController: ShowDetails called with a null item.");
-            return;
-        }
-        
-        Debug.Log($"ItemDetailsPanelController: Displaying details for {item.ItemName}, from {(isFromShop ? "Shop" : "Inventory")}");
+        if (item == null) return; // Prevent null reference errors
 
         // Set UI elements with item details
         _itemIcon.sprite = item.Sprite;
         _itemType.text = item.ItemType.ToString();
         _itemName.text = item.ItemName;
         _description.text = item.Description;
-        _buyPrice.text = $"{item.BuyingPrice}";
-        _sellPrice.text = $"{item.SellingPrice}";
+        _buyPrice.text = $"${item.BuyingPrice}";
+        _sellPrice.text = $"${item.SellingPrice}";
         _weight.text = $"{item.Weight}";
         _rarity.text = item.ItemRarity.ToString();
         _maxStackSize.text = item.MaxStackSize.ToString();
 
-        // Configure action button for either buying or selling
-        
+        // Configure the action button depending on whether the item is from the shop or inventory
         _actionButton.GetComponentInChildren<TextMeshProUGUI>().text = isFromShop ? "BUY" : "SELL";
+        // Remove any previous listeners to prevent multiple calls
         _actionButton.onClick.RemoveAllListeners();
+        // Add a new listener to trigger the transaction process
         _actionButton.onClick.AddListener(() =>
         {
-            Debug.Log($"ItemDetailsPanelController: {(isFromShop ? "Buying" : "Selling")} {item.ItemName}");
             ServiceLocator.Get<EventService>().OnTransactionInitiated?.Invoke(item, isFromShop);
-            
-            _panel.SetActive(false);
+            _panel.SetActive(false);// Hide the panel after action
         });
 
-        
     }
 
+    // Hides the item details panel.
     public void HideDetails()
     { 
         _panel.SetActive(false);
-        Debug.Log($"ItemDetailsPanelController: Panel Closed Without Any Action");
     }
 }

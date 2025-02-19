@@ -1,4 +1,8 @@
-using UnityEngine;
+/// <summary>
+/// Handles in-game transactions for buying and selling items.
+/// Interacts with InventoryService, CurrencyService, and EventService 
+/// to process transactions and trigger relevant game events.
+/// </summary>
 
 public class TransactionService : ITransactionService
 {
@@ -6,23 +10,20 @@ public class TransactionService : ITransactionService
     private readonly ICurrencyService _currency;
     private readonly EventService _eventService;
 
-    // Constructor retrieves required services via ServiceLocator
+    // Constructor retrieves required services via ServiceLocator. Ensures dependency injection without hard dependencies.
     public TransactionService()
     {
         _inventory = ServiceLocator.Get<IInventoryService>();
         _currency = ServiceLocator.Get<ICurrencyService>();
         _eventService = ServiceLocator.Get<EventService>();
-        Debug.Log("TransactionService Initialized");
     }
 
-    // Processes a transaction based on its type (Buy or Sell)
+    // Processes a transaction based on its type (Buy or Sell). Calls appropriate handlers based on the transaction type.
     public void ProcessTransaction(TransactionData data)
     {
-        Debug.Log($"Processing transaction: {data.Type} {data.Quantity}x {data.Item.ItemName}");
         
         try
         {
-            _eventService.OnTransactionSuccess.Invoke();
 
             switch (data.Type)
             {
@@ -43,50 +44,46 @@ public class TransactionService : ITransactionService
         }
         catch (System.Exception ex)
         {
-            _eventService.OnTransactionFailed.Invoke(ex.Message);
-            //_eventService.OnTransactionMessage.Invoke(ex.Message);
-            Debug.LogError($"Transaction failed: {ex.Message}");
+            _eventService.OnTransactionFailed.Invoke(ex.Message); //Failure Sound
         }
     }
 
-    // Handles a purchase transaction
+    // Handles a purchase transaction. Checks if the player has enough currency and inventory space before completing the purchase.
     private void HandlePurchase(TransactionData data)
     {
-        // In HandlePurchase
+
         if (data.Quantity <= 0)
             throw new System.Exception("Invalid quantity!");
 
         float totalCost = data.Item.BuyingPrice * data.Quantity;
-        Debug.Log($"Attempting to buy {data.Quantity}x {data.Item.ItemName} for {totalCost}G");
 
-        // Check if the player has enough coins
+        // Check if the player has enough coins to make the purchase 
         if (!_currency.TryDeductCoins(totalCost))
             throw new System.Exception("Not enough coins!");
 
-        // Check if there is enough inventory space
+        // Check if there is enough inventory space to store the purchased item
         float totalWeight = data.Item.Weight * data.Quantity;
         if (!_inventory.CanAddItem(totalWeight))
             throw new System.Exception("Inventory full!");
 
-        // Add the item to the inventory
+        // Add the item to the inventory and deduct currency
         _currency.TryDeductCoins(totalCost);
         _inventory.AddItem(data.Item, data.Quantity);
 
+        // Notify event listeners of the successful transaction
         _eventService.OnBuyTransaction.Invoke(data.Item, data.Quantity);
         _eventService.OnTransactionMessage.Invoke($"Bought {data.Quantity}x {data.Item.ItemName} for {totalCost}G");
 
-        Debug.Log($"Successfully purchased {data.Quantity}x {data.Item.ItemName} for {totalCost}G");
     }
 
-    // Handles a sale transaction
+    // Handles a sale transaction. Checks if the player has the required item and quantity before proceeding with the sale.
     private void HandleSale(TransactionData data)
     {
-        // In HandleSale
+
         if (data.Quantity <= 0)
             throw new System.Exception("Invalid quantity!");
 
         float totalValue = data.Item.SellingPrice * data.Quantity;
-        Debug.Log($"Attempting to sell {data.Quantity}x {data.Item.ItemName} for {totalValue}G");
 
         // Check if the player has enough of the item to sell
         if (!_inventory.HasItem(data.Item, data.Quantity))
@@ -96,10 +93,10 @@ public class TransactionService : ITransactionService
         _currency.AddCoins(totalValue);
         _inventory.RemoveItem(data.Item, data.Quantity);
 
+        // Notify event listeners of the successful sale
         _eventService.OnInventoryUpdated.Invoke();
         _eventService.OnSellTransaction.Invoke(data.Item, data.Quantity);
         _eventService.OnTransactionMessage.Invoke($"Sold {data.Quantity}x {data.Item.ItemName} for {totalValue}G");
 
-        Debug.Log($"Successfully sold {data.Quantity}x {data.Item.ItemName} for {totalValue}G");
     }
 }
